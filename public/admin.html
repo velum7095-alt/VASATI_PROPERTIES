@@ -1,0 +1,1044 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Vasati Admin Portal — Real Estate Management System</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/images/logo.png">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --font: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --bg: #090d16;
+      --card-bg: #111827;
+      --card-border: #1f2937;
+      --text: #f3f4f6;
+      --muted: #9ca3af;
+      --primary: #3b82f6;
+      --primary-hover: #2563eb;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --radius: 14px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100vh; display: flex; }
+
+    /* Sidebar Navigation */
+    .sidebar {
+      width: 260px; background: #0c1220; border-right: 1px solid var(--card-border);
+      padding: 24px 18px; display: flex; flex-direction: column; flex-shrink: 0;
+    }
+    .brand {
+      display: flex; align-items: center; gap: 10px; font-size: 19px; font-weight: 800;
+      color: white; text-decoration: none; margin-bottom: 32px; padding-left: 6px;
+    }
+    .brand-mark {
+      width: 34px; height: 34px; background: linear-gradient(135deg,#3b82f6,#1d4ed8);
+      border-radius: 9px; display: grid; place-items: center; font-size: 17px;
+    }
+    .nav-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+    .nav-btn {
+      display: flex; align-items: center; gap: 12px; width: 100%; padding: 11px 14px;
+      border: 0; border-radius: 9px; background: transparent; color: var(--muted);
+      font-size: 14px; font-weight: 600; cursor: pointer; text-align: left; transition: all .15s ease;
+      text-decoration: none;
+    }
+    .nav-btn:hover { background: rgba(255,255,255,0.06); color: white; }
+    .nav-btn.active { background: rgba(59, 130, 246, 0.16); color: #60a5fa; }
+    .sidebar-footer { margin-top: auto; padding-top: 20px; border-top: 1px solid var(--card-border); font-size: 11.5px; color: #6b7280; }
+
+    /* Main Content Area */
+    .main-content { flex: 1; padding: 32px 36px; overflow-y: auto; max-height: 100vh; }
+    .top-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; flex-wrap: wrap; gap: 16px; }
+    .top-header h1 { font-size: 26px; font-weight: 800; letter-spacing: -0.6px; }
+    .top-header p { font-size: 14px; color: var(--muted); margin-top: 4px; }
+    
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 10px 18px; border-radius: 9px; font-size: 13.5px; font-weight: 700;
+      cursor: pointer; border: 1px solid transparent; transition: all .15s ease; text-decoration: none;
+    }
+    .btn-primary { background: #2563eb; color: white; }
+    .btn-primary:hover { background: #1d4ed8; }
+    .btn-outline { background: #1f2937; border-color: #374151; color: white; }
+    .btn-outline:hover { background: #374151; }
+    .btn-danger { background: rgba(239, 68, 68, 0.15); color: #f87171; border-color: rgba(239, 68, 68, 0.3); }
+    .btn-danger:hover { background: rgba(239, 68, 68, 0.3); }
+    .btn-sm { padding: 6px 12px; font-size: 12px; border-radius: 7px; }
+
+    /* Stats Grid */
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 18px; margin-bottom: 30px; }
+    .stat-card {
+      background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius);
+      padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    .stat-label { font-size: 12px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+    .stat-val { font-size: 32px; font-weight: 800; margin: 8px 0 4px; letter-spacing: -0.8px; }
+    .stat-sub { font-size: 12px; color: #6b7280; }
+
+    /* Card Panels & Tables */
+    .card {
+      background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius);
+      overflow: hidden; margin-bottom: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    .card-head {
+      padding: 20px 24px; border-bottom: 1px solid var(--card-border);
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;
+    }
+    .card-head h2 { font-size: 18px; font-weight: 800; }
+
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13.5px; }
+    th { padding: 12px 20px; background: #0c1220; font-weight: 700; color: var(--muted); border-bottom: 1px solid var(--card-border); white-space: nowrap; }
+    td { padding: 14px 20px; border-bottom: 1px solid var(--card-border); vertical-align: middle; }
+    tr:last-child td { border-bottom: 0; }
+    tr:hover td { background: rgba(255,255,255,0.02); }
+
+    .prop-cell { display: flex; align-items: center; gap: 14px; min-width: 250px; }
+    .prop-thumb { width: 52px; height: 42px; border-radius: 7px; object-fit: cover; background: #1f2937; flex-shrink: 0; }
+    .prop-title { font-weight: 700; color: white; }
+    .prop-loc { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+    .badge { display: inline-flex; align-items: center; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+    .badge-new { background: rgba(16, 185, 129, 0.18); color: #34d399; }
+    .badge-resale { background: rgba(59, 130, 246, 0.18); color: #60a5fa; }
+    .badge-villa { background: rgba(245, 158, 11, 0.18); color: #fbbf24; }
+
+    /* Modal Sheet */
+    dialog {
+      width: min(680px, calc(100% - 32px)); border: 1px solid var(--card-border);
+      background: #111827; color: white; border-radius: var(--radius);
+      box-shadow: 0 24px 48px rgba(0,0,0,0.6); padding: 0; margin: auto;
+    }
+    dialog::backdrop { background: rgba(0,0,0,0.7); backdrop-filter: blur(4px); }
+    .modal-head { padding: 20px 24px; border-bottom: 1px solid var(--card-border); display: flex; justify-content: space-between; align-items: center; }
+    .modal-close { background: none; border: 0; font-size: 22px; cursor: pointer; color: var(--muted); }
+    .modal-body { padding: 24px; max-height: 75vh; overflow-y: auto; }
+    
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-full { grid-column: 1 / -1; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group label { font-size: 12px; font-weight: 700; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px; }
+    .form-group input, .form-group select, .form-group textarea {
+      padding: 10px 12px; background: #0c1220; border: 1px solid #1f2937; border-radius: 8px;
+      color: white; font-family: inherit; font-size: 13.5px;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      border-color: var(--primary); outline: none;
+    }
+    .modal-foot { padding: 18px 24px; border-top: 1px solid var(--card-border); display: flex; justify-content: flex-end; gap: 10px; background: #0c1220; }
+
+    .toast {
+      position: fixed; bottom: 24px; right: 24px; background: white; color: black;
+      padding: 12px 20px; border-radius: 9px; font-weight: 700; font-size: 13.5px;
+      opacity: 0; transform: translateY(10px); transition: all .2s ease; z-index: 1000; pointer-events: none;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; }
+  </style>
+</head>
+<body>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <a href="/" class="brand" style="display:flex;align-items:center;gap:12px;">
+      <img src="/images/logo.png" alt="Vasati Logo" style="height:40px;width:40px;object-fit:contain;border-radius:8px;background:white;padding:2px;">
+      <div>
+        <div style="font-size:16px;font-weight:800;letter-spacing:1px;color:white;line-height:1.1;">VASATI</div>
+        <div style="font-size:9.5px;font-weight:700;letter-spacing:2px;color:#38bdf8;margin-top:2px;">ADMIN PORTAL</div>
+      </div>
+    </a>
+    <ul class="nav-list">
+      <li><button class="nav-btn active" data-tab="properties">🏢 Properties CMS</button></li>
+      <li><button class="nav-btn" data-tab="slides">🎠 Hero Carousel Slides</button></li>
+      <li><button class="nav-btn" data-tab="settings">⚙️ Site Content & Settings</button></li>
+      <li><button class="nav-btn" data-tab="enquiries">📩 Leads & Inquiries</button></li>
+      <li><a href="/" class="nav-btn" target="_blank">🌐 Live Portal ↗</a></li>
+    </ul>
+    <div class="sidebar-footer">
+      Node.js v22 Engine<br>
+      SQLite DB: properties.db
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="top-header">
+      <div>
+        <h1 id="pageTitle">Properties Management</h1>
+        <p id="pageSubtitle">Live inventory control with instant synchronization across Bengaluru portals.</p>
+      </div>
+      <div style="display:flex;gap:10px;">
+        <button class="btn btn-outline" id="refreshBtn">🔄 Refresh Data</button>
+        <button class="btn btn-primary" id="openAddModalBtn">➕ Add Property</button>
+        <button class="btn btn-primary" id="openAddSlideBtn" style="display:none;">➕ Add Hero Slide</button>
+      </div>
+    </div>
+
+    <!-- Stats Overview -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">Total Listings</div>
+        <div class="stat-val" id="statTotalProps">-</div>
+        <div class="stat-sub">Live in database</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">New Developments</div>
+        <div class="stat-val" id="statNewHomes" style="color:var(--success)">-</div>
+        <div class="stat-sub">Builder listings</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Resale & Villas</div>
+        <div class="stat-val" id="statResaleHomes" style="color:var(--warning)">-</div>
+        <div class="stat-sub">Verified ownership</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Hero Slides</div>
+        <div class="stat-val" id="statTotalSlides" style="color:#a855f7">-</div>
+        <div class="stat-sub">Promotional carousel</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Total Leads</div>
+        <div class="stat-val" id="statTotalEnquiries" style="color:#60a5fa">-</div>
+        <div class="stat-sub"><span id="statNewEnquiries" style="color:#f87171;font-weight:700">0</span> pending contact</div>
+      </div>
+    </div>
+
+    <!-- Tab 1: Properties Table -->
+    <section class="tab-pane active" id="tab-properties">
+      <div class="card">
+        <div class="card-head">
+          <h2>All Bengaluru Properties (<span id="propCount">0</span>)</h2>
+          <input type="text" id="propSearchInput" placeholder="Filter by title or area..." style="padding:8px 12px;background:#0c1220;border:1px solid var(--card-border);border-radius:8px;color:white;font-size:13px;width:240px;">
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Property</th>
+                <th>Price</th>
+                <th>BHK / Area</th>
+                <th>Category</th>
+                <th>Possession</th>
+                <th style="text-align:right">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="propertiesTableBody">
+              <tr><td colspan="6" style="text-align:center;padding:30px;color:var(--muted)">Loading properties...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab 2: Hero Carousel Slides -->
+    <section class="tab-pane" id="tab-slides">
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <h2>Hero Carousel Slides (<span id="slideCount">0</span>)</h2>
+            <div style="font-size:12px;color:var(--muted);margin-top:2px;">Manage large promotional slides, project banners, developer highlights, and video tours displayed at top of homepage.</div>
+          </div>
+          <button class="btn btn-primary btn-sm" id="innerAddSlideBtn">➕ Add Slide</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Banner / Slide</th>
+                <th>Developer</th>
+                <th>BHK & Pricing</th>
+                <th>Locality</th>
+                <th>Special Offer</th>
+                <th>Video Tour</th>
+                <th style="text-align:right">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="slidesTableBody">
+              <tr><td colspan="7" style="text-align:center;padding:30px;color:var(--muted)">Loading hero slides...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab 3: Site Content & Branding Settings -->
+    <section class="tab-pane" id="tab-settings">
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <h2>Website Content & Global Settings</h2>
+            <div style="font-size:12px;color:var(--muted);margin-top:2px;">Modify homepage headlines, taglines, contact numbers, and live market statistics directly without editing code.</div>
+          </div>
+          <button type="button" class="btn btn-primary btn-sm" id="saveSettingsTopBtn">💾 Save All Changes</button>
+        </div>
+        <form id="settingsForm" style="padding:24px;">
+          <h3 style="font-size:15px;color:#38bdf8;margin-bottom:16px;text-transform:uppercase;letter-spacing:0.5px;">1. Hero Banner Content</h3>
+          <div class="form-grid" style="margin-bottom:24px;">
+            <div class="form-group form-full">
+              <label>Hero Tagline / Pill</label>
+              <input type="text" id="settingHeroTag" placeholder="E.g. ✨ Premium Bengaluru Real Estate Portfolio">
+            </div>
+            <div class="form-group form-full">
+              <label>Main Headline Title</label>
+              <input type="text" id="settingHeroTitle" placeholder="E.g. Find Your Dream Space in the Silicon Valley of India">
+            </div>
+            <div class="form-group form-full">
+              <label>Hero Subtitle / Description</label>
+              <textarea id="settingHeroSubtitle" rows="2" placeholder="Brief summary of offerings under main headline..."></textarea>
+            </div>
+          </div>
+
+          <h3 style="font-size:15px;color:#38bdf8;margin-bottom:16px;text-transform:uppercase;letter-spacing:0.5px;">2. Contact & Customer Support</h3>
+          <div class="form-grid" style="margin-bottom:24px;">
+            <div class="form-group">
+              <label>Primary Phone Number</label>
+              <input type="text" id="settingContactPhone" placeholder="E.g. +91 98765 43210">
+            </div>
+            <div class="form-group">
+              <label>WhatsApp Number (Digits only, including country code)</label>
+              <input type="text" id="settingWhatsApp" placeholder="E.g. 919876543210">
+            </div>
+            <div class="form-group form-full">
+              <label>Support Email Address</label>
+              <input type="email" id="settingContactEmail" placeholder="E.g. contact@vasatiproperties.com">
+            </div>
+          </div>
+
+          <h3 style="font-size:15px;color:#38bdf8;margin-bottom:16px;text-transform:uppercase;letter-spacing:0.5px;">3. Live Portfolio Counters (Homepage)</h3>
+          <div class="form-grid" style="margin-bottom:24px;">
+            <div class="form-group">
+              <label>Active Homes Stat</label>
+              <input type="text" id="settingStatActive" placeholder="E.g. 150+">
+            </div>
+            <div class="form-group">
+              <label>Locality Hubs Stat</label>
+              <input type="text" id="settingStatHubs" placeholder="E.g. 15+">
+            </div>
+            <div class="form-group">
+              <label>Verification / Trust Metric</label>
+              <input type="text" id="settingStatTrust" placeholder="E.g. 100%">
+            </div>
+          </div>
+
+          <div style="display:flex;justify-content:flex-end;">
+            <button type="submit" class="btn btn-primary" id="saveSettingsBtnBottom">💾 Save All Changes</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- Tab 4: Enquiries Table -->
+    <section class="tab-pane" id="tab-enquiries">
+      <div class="card">
+        <div class="card-head">
+          <h2>Viewing Inquiries & Customer Leads (<span id="enquiryCount">0</span>)</h2>
+          <select id="enquiryFilterStatus" style="padding:8px 12px;background:#0c1220;border:1px solid var(--card-border);border-radius:8px;color:white;font-size:13px;">
+            <option value="">All Statuses</option>
+            <option value="New">New Leads</option>
+            <option value="Contacted">Contacted</option>
+            <option value="Closed">Closed</option>
+          </select>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Client</th>
+                <th>Phone</th>
+                <th>Inquiring For</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th style="text-align:right">Direct Contact / Action</th>
+              </tr>
+            </thead>
+            <tbody id="enquiriesTableBody">
+              <tr><td colspan="6" style="text-align:center;padding:30px;color:var(--muted)">Loading leads...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Add / Edit Property Modal -->
+  <dialog id="propertyModal">
+    <div class="modal-head">
+      <h3 id="modalTitle">Add New Property</h3>
+      <button class="modal-close" id="closeModalBtn">&times;</button>
+    </div>
+    <form id="propertyForm">
+      <input type="hidden" id="editPropId">
+      <div class="modal-body">
+        <div class="form-grid">
+          <div class="form-group form-full">
+            <label>Property Title *</label>
+            <input type="text" id="formTitle" placeholder="E.g. Ultra Luxury 3 BHK in Indiranagar" required>
+          </div>
+          <div class="form-group">
+            <label>Full Location *</label>
+            <input type="text" id="formLocation" placeholder="E.g. Indiranagar, East Bengaluru" required>
+          </div>
+          <div class="form-group">
+            <label>Locality Hub</label>
+            <input type="text" id="formLocality" placeholder="E.g. Indiranagar">
+          </div>
+          <div class="form-group">
+            <label>Price in Lakhs (₹) *</label>
+            <input type="number" id="formPrice" step="0.5" placeholder="E.g. 95 or 240" required>
+          </div>
+          <div class="form-group">
+            <label>Price Display Label</label>
+            <input type="text" id="formPriceLabel" placeholder="Auto-calculated (e.g. ₹2.4 Cr)">
+          </div>
+          <div class="form-group">
+            <label>Bedrooms (BHK) *</label>
+            <select id="formBhk" required>
+              <option value="1">1 BHK</option>
+              <option value="2">2 BHK</option>
+              <option value="3" selected>3 BHK</option>
+              <option value="4">4 BHK</option>
+              <option value="5">5+ BHK</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Super Built-up Area *</label>
+            <input type="text" id="formArea" placeholder="E.g. 1,850 sqft" required>
+          </div>
+          <div class="form-group">
+            <label>Bathrooms</label>
+            <input type="number" id="formBaths" value="2" min="1" max="10">
+          </div>
+          <div class="form-group">
+            <label>Status / Category</label>
+            <select id="formStatus">
+              <option value="New">New Launch</option>
+              <option value="Resale">Resale</option>
+              <option value="Villa">Luxury Villa</option>
+            </select>
+          </div>
+          <div class="form-group form-full">
+            <label>Image URL *</label>
+            <input type="url" id="formImage" placeholder="https://images.unsplash.com/..." required>
+          </div>
+          <div class="form-group form-full">
+            <label>Video Tour Walkthrough URL (YouTube Embed / Link)</label>
+            <input type="url" id="formVideoUrl" placeholder="https://www.youtube.com/watch?v=... or https://youtu.be/...">
+          </div>
+          <div class="form-group form-full">
+            <label>Description</label>
+            <textarea id="formDescription" rows="3" placeholder="Key highlights, flooring, view, etc..."></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button type="button" class="btn btn-outline" id="cancelModalBtn">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="savePropertyBtn">Save Property</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Add / Edit Hero Slide Modal -->
+  <dialog id="slideModal">
+    <div class="modal-head">
+      <h3 id="slideModalTitle">Add Hero Slide</h3>
+      <button class="modal-close" id="closeSlideModalBtn">&times;</button>
+    </div>
+    <form id="slideForm">
+      <input type="hidden" id="editSlideId">
+      <div class="modal-body">
+        <div class="form-grid">
+          <div class="form-group form-full">
+            <label>Project / Community Name *</label>
+            <input type="text" id="slideName" placeholder="E.g. Prestige Park Grove" required>
+          </div>
+          <div class="form-group">
+            <label>Builder / Developer Name *</label>
+            <input type="text" id="slideBuilder" placeholder="E.g. Prestige Group" required>
+          </div>
+          <div class="form-group">
+            <label>Developer Logo Tag</label>
+            <input type="text" id="slideBuilderLogo" placeholder="E.g. PRESTIGE or SOBHA">
+          </div>
+          <div class="form-group">
+            <label>Price Range</label>
+            <input type="text" id="slidePriceRange" placeholder="E.g. ₹1.2 Cr – ₹3.5 Cr">
+          </div>
+          <div class="form-group">
+            <label>BHK Configurations</label>
+            <input type="text" id="slideBhkTypes" placeholder="E.g. 2, 3 & 4 BHK Luxury Residences">
+          </div>
+          <div class="form-group form-full">
+            <label>Locality / Address</label>
+            <input type="text" id="slideLocation" placeholder="E.g. Whitefield, Bengaluru">
+          </div>
+          <div class="form-group form-full">
+            <label>Special Promotional Offer / Sub-tagline</label>
+            <input type="text" id="slideOfferText" placeholder="E.g. Exclusive Launch Privileges · Zero Floor Rise">
+          </div>
+          <div class="form-group form-full">
+            <label>Banner Image URL *</label>
+            <input type="url" id="slideImage" placeholder="https://images.unsplash.com/..." required>
+          </div>
+          <div class="form-group form-full">
+            <label>Walkthrough Video Tour URL (YouTube)</label>
+            <input type="url" id="slideVideoUrl" placeholder="https://www.youtube.com/watch?v=...">
+          </div>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button type="button" class="btn btn-outline" id="cancelSlideModalBtn">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="saveSlideBtn">Save Slide</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    let properties = [];
+    let slides = [];
+    let enquiries = [];
+    let siteSettings = {};
+
+    const toast = document.getElementById('toast');
+    let toastTimer;
+    function showToast(msg) {
+      toast.textContent = msg;
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove('show'), 2800);
+    }
+
+    // --- Tab Switcher ---
+    document.querySelectorAll('.nav-btn[data-tab]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const target = btn.dataset.tab;
+        document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+        document.getElementById(`tab-${target}`).classList.add('active');
+
+        const titleEl = document.getElementById('pageTitle');
+        const subEl = document.getElementById('pageSubtitle');
+        const addPropBtn = document.getElementById('openAddModalBtn');
+        const addSlideBtn = document.getElementById('openAddSlideBtn');
+
+        if (target === 'properties') {
+          titleEl.textContent = 'Properties Management';
+          subEl.textContent = 'Live inventory control with instant synchronization across Bengaluru portals.';
+          addPropBtn.style.display = 'inline-flex';
+          addSlideBtn.style.display = 'none';
+        } else if (target === 'slides') {
+          titleEl.textContent = 'Hero Carousel Slides CMS';
+          subEl.textContent = 'Control rotating banner projects, pricing, developer branding, and video tours at the top of the homepage.';
+          addPropBtn.style.display = 'none';
+          addSlideBtn.style.display = 'inline-flex';
+          loadSlides();
+        } else if (target === 'settings') {
+          titleEl.textContent = 'Website Content & Global Settings';
+          subEl.textContent = 'Update site headline copy, contact phone, direct WhatsApp link, and live market statistics.';
+          addPropBtn.style.display = 'none';
+          addSlideBtn.style.display = 'none';
+          loadSettings();
+        } else if (target === 'enquiries') {
+          titleEl.textContent = 'Leads & Viewing Inquiries';
+          subEl.textContent = 'Manage buyer inspection requests, contact callbacks, and instant WhatsApp chat outreach.';
+          addPropBtn.style.display = 'none';
+          addSlideBtn.style.display = 'none';
+          loadEnquiries();
+        }
+      });
+    });
+
+    // --- Stats & Counters ---
+    async function loadStats() {
+      try {
+        const res = await fetch('/api/stats');
+        const data = await res.json();
+        if (data.success) {
+          const s = data.data;
+          document.getElementById('statTotalProps').textContent = s.totalProperties;
+          document.getElementById('statNewHomes').textContent = s.newHomes;
+          document.getElementById('statResaleHomes').textContent = `${s.resaleHomes + s.villas}`;
+          document.getElementById('statTotalEnquiries').textContent = s.totalEnquiries;
+          document.getElementById('statNewEnquiries').textContent = s.newEnquiries;
+        }
+      } catch (e) {}
+    }
+
+    // --- Properties CMS ---
+    async function loadProperties() {
+      try {
+        const res = await fetch('/api/properties');
+        const data = await res.json();
+        if (data.success) {
+          properties = data.data;
+          renderPropertiesTable();
+        }
+      } catch (e) {
+        showToast('Error loading properties');
+      }
+    }
+
+    function renderPropertiesTable() {
+      const tbody = document.getElementById('propertiesTableBody');
+      const search = document.getElementById('propSearchInput').value.toLowerCase().trim();
+      const filtered = properties.filter(p => !search || p.title.toLowerCase().includes(search) || p.location.toLowerCase().includes(search));
+
+      document.getElementById('propCount').textContent = filtered.length;
+
+      if (!filtered.length) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:30px;color:var(--muted)">No properties found.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(p => `
+        <tr>
+          <td>
+            <div class="prop-cell">
+              <img src="${p.image}" class="prop-thumb" alt="${p.title}">
+              <div>
+                <div class="prop-title">
+                  ${p.title}
+                  ${p.video_url ? '<span style="color:#38bdf8;font-size:11px;font-weight:700;margin-left:6px;" title="Walkthrough video configured">🎥 Video</span>' : ''}
+                </div>
+                <div class="prop-loc">📍 ${p.location}</div>
+              </div>
+            </div>
+          </td>
+          <td><strong>${p.priceLabel}</strong></td>
+          <td>${p.bhk} BHK · ${p.area}</td>
+          <td>
+            <span class="badge ${p.status === 'New' ? 'badge-new' : p.status === 'Villa' ? 'badge-villa' : 'badge-resale'}">
+              ${p.status}
+            </span>
+          </td>
+          <td>${p.possession || 'Ready'}</td>
+          <td style="text-align:right">
+            <div style="display:flex;gap:6px;justify-content:flex-end;">
+              <button class="btn btn-outline btn-sm" onclick="editProperty('${p.id}')">✏ Edit</button>
+              <button class="btn btn-danger btn-sm" onclick="deleteProperty('${p.id}', '${p.title.replace(/'/g, "\\'")}')">🗑</button>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    document.getElementById('propSearchInput').addEventListener('input', renderPropertiesTable);
+
+    const propModal = document.getElementById('propertyModal');
+    const propForm = document.getElementById('propertyForm');
+
+    document.getElementById('openAddModalBtn').addEventListener('click', () => {
+      propForm.reset();
+      document.getElementById('editPropId').value = '';
+      document.getElementById('modalTitle').textContent = 'Add New Property';
+      document.getElementById('formImage').value = 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1000&q=78';
+      document.getElementById('formVideoUrl').value = '';
+      propModal.showModal();
+    });
+
+    document.getElementById('closeModalBtn').addEventListener('click', () => propModal.close());
+    document.getElementById('cancelModalBtn').addEventListener('click', () => propModal.close());
+
+    function editProperty(id) {
+      const p = properties.find(item => item.id === id);
+      if (!p) return;
+      document.getElementById('editPropId').value = p.id;
+      document.getElementById('modalTitle').textContent = 'Edit Property';
+      document.getElementById('formTitle').value = p.title;
+      document.getElementById('formLocation').value = p.location;
+      document.getElementById('formLocality').value = p.locality || '';
+      document.getElementById('formPrice').value = p.price;
+      document.getElementById('formPriceLabel').value = p.priceLabel;
+      document.getElementById('formBhk').value = p.bhk;
+      document.getElementById('formArea').value = p.area;
+      document.getElementById('formBaths').value = p.baths || 2;
+      document.getElementById('formStatus').value = p.status;
+      document.getElementById('formImage').value = p.image;
+      document.getElementById('formVideoUrl').value = p.video_url || '';
+      document.getElementById('formDescription').value = p.description || '';
+      propModal.showModal();
+    }
+
+    propForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const saveBtn = document.getElementById('savePropertyBtn');
+      saveBtn.disabled = true;
+      saveBtn.textContent = 'Saving...';
+
+      const id = document.getElementById('editPropId').value;
+      const payload = {
+        title: document.getElementById('formTitle').value.trim(),
+        location: document.getElementById('formLocation').value.trim(),
+        locality: document.getElementById('formLocality').value.trim(),
+        price: Number(document.getElementById('formPrice').value),
+        priceLabel: document.getElementById('formPriceLabel').value.trim(),
+        bhk: Number(document.getElementById('formBhk').value),
+        area: document.getElementById('formArea').value.trim(),
+        baths: Number(document.getElementById('formBaths').value),
+        status: document.getElementById('formStatus').value,
+        image: document.getElementById('formImage').value.trim(),
+        video_url: document.getElementById('formVideoUrl').value.trim(),
+        description: document.getElementById('formDescription').value.trim()
+      };
+
+      try {
+        const url = id ? `/api/properties/${id}` : '/api/properties';
+        const method = id ? 'PUT' : 'POST';
+        const res = await fetch(url, {
+          method,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const result = await res.json();
+        if (result.success) {
+          showToast(id ? '✅ Property updated!' : '✅ Property added!');
+          propModal.close();
+          loadProperties();
+          loadStats();
+        }
+      } catch (err) {
+        showToast('Error saving property');
+      } finally {
+        saveBtn.disabled = false;
+        saveBtn.textContent = 'Save Property';
+      }
+    });
+
+    async function deleteProperty(id, title) {
+      if (!confirm(`Delete "${title}"?`)) return;
+      try {
+        const res = await fetch(`/api/properties/${id}`, { method: 'DELETE' });
+        const data = await res.json();
+        if (data.success) {
+          showToast('Property deleted');
+          loadProperties();
+          loadStats();
+        }
+      } catch (e) {
+        showToast('Error deleting property');
+      }
+    }
+
+    // --- Hero Carousel Slides CMS ---
+    async function loadSlides() {
+      try {
+        const res = await fetch('/api/featured-projects');
+        const data = await res.json();
+        if (data.success) {
+          slides = data.data;
+          document.getElementById('statTotalSlides').textContent = slides.length;
+          document.getElementById('slideCount').textContent = slides.length;
+          renderSlidesTable();
+        }
+      } catch (e) {
+        showToast('Error loading hero slides');
+      }
+    }
+
+    function renderSlidesTable() {
+      const tbody = document.getElementById('slidesTableBody');
+      if (!slides.length) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:30px;color:var(--muted)">No hero slides configured. Click "+ Add Slide" to create one.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = slides.map(s => `
+        <tr>
+          <td>
+            <div class="prop-cell">
+              <img src="${s.image}" class="prop-thumb" alt="${s.name}">
+              <div>
+                <div class="prop-title">${s.name}</div>
+                <div class="prop-loc">${s.builder_logo ? `[${s.builder_logo}]` : ''}</div>
+              </div>
+            </div>
+          </td>
+          <td><strong>${s.builder_name}</strong></td>
+          <td>
+            <div>${s.bhk_types}</div>
+            <div style="font-size:12px;color:var(--muted);">${s.price_range}</div>
+          </td>
+          <td>📍 ${s.location}</td>
+          <td><span style="font-size:12px;color:#fde047;">✦ ${s.offer_text}</span></td>
+          <td>
+            ${s.video_url ? `<a href="${s.video_url}" target="_blank" style="color:#38bdf8;font-size:12px;font-weight:700;">🎥 Watch ↗</a>` : '<span style="color:#64748b;font-size:12px;">None</span>'}
+          </td>
+          <td style="text-align:right">
+            <div style="display:flex;gap:6px;justify-content:flex-end;">
+              <button class="btn btn-outline btn-sm" onclick="editSlide('${s.id}')">✏ Edit</button>
+              <button class="btn btn-danger btn-sm" onclick="deleteSlide('${s.id}', '${s.name.replace(/'/g, "\\'")}')">🗑</button>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    const slideModal = document.getElementById('slideModal');
+    const slideForm = document.getElementById('slideForm');
+
+    function openAddSlideModal() {
+      slideForm.reset();
+      document.getElementById('editSlideId').value = '';
+      document.getElementById('slideModalTitle').textContent = 'Add Hero Slide';
+      document.getElementById('slideImage').value = 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1000&q=78';
+      slideModal.showModal();
+    }
+
+    document.getElementById('openAddSlideBtn').addEventListener('click', openAddSlideModal);
+    document.getElementById('innerAddSlideBtn').addEventListener('click', openAddSlideModal);
+    document.getElementById('closeSlideModalBtn').addEventListener('click', () => slideModal.close());
+    document.getElementById('cancelSlideModalBtn').addEventListener('click', () => slideModal.close());
+
+    function editSlide(id) {
+      const s = slides.find(item => item.id === id);
+      if (!s) return;
+      document.getElementById('editSlideId').value = s.id;
+      document.getElementById('slideModalTitle').textContent = 'Edit Hero Slide';
+      document.getElementById('slideName').value = s.name;
+      document.getElementById('slideBuilder').value = s.builder_name;
+      document.getElementById('slideBuilderLogo').value = s.builder_logo || '';
+      document.getElementById('slidePriceRange').value = s.price_range || '';
+      document.getElementById('slideBhkTypes').value = s.bhk_types || '';
+      document.getElementById('slideLocation').value = s.location || '';
+      document.getElementById('slideOfferText').value = s.offer_text || '';
+      document.getElementById('slideImage').value = s.image;
+      document.getElementById('slideVideoUrl').value = s.video_url || '';
+      slideModal.showModal();
+    }
+
+    slideForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const saveBtn = document.getElementById('saveSlideBtn');
+      saveBtn.disabled = true;
+      saveBtn.textContent = 'Saving...';
+
+      const id = document.getElementById('editSlideId').value;
+      const payload = {
+        name: document.getElementById('slideName').value.trim(),
+        builder_name: document.getElementById('slideBuilder').value.trim(),
+        builder_logo: document.getElementById('slideBuilderLogo').value.trim(),
+        price_range: document.getElementById('slidePriceRange').value.trim(),
+        bhk_types: document.getElementById('slideBhkTypes').value.trim(),
+        location: document.getElementById('slideLocation').value.trim(),
+        offer_text: document.getElementById('slideOfferText').value.trim(),
+        image: document.getElementById('slideImage').value.trim(),
+        video_url: document.getElementById('slideVideoUrl').value.trim(),
+        link: '#propertiesSection'
+      };
+
+      try {
+        const url = id ? `/api/featured-projects/${id}` : '/api/featured-projects';
+        const method = id ? 'PUT' : 'POST';
+        const res = await fetch(url, {
+          method,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const result = await res.json();
+        if (result.success) {
+          showToast(id ? '✅ Hero slide updated!' : '✅ Hero slide added!');
+          slideModal.close();
+          loadSlides();
+        }
+      } catch (err) {
+        showToast('Error saving slide');
+      } finally {
+        saveBtn.disabled = false;
+        saveBtn.textContent = 'Save Slide';
+      }
+    });
+
+    async function deleteSlide(id, name) {
+      if (!confirm(`Delete carousel slide "${name}"?`)) return;
+      try {
+        const res = await fetch(`/api/featured-projects/${id}`, { method: 'DELETE' });
+        const data = await res.json();
+        if (data.success) {
+          showToast('Hero slide removed');
+          loadSlides();
+        }
+      } catch (e) {
+        showToast('Error deleting slide');
+      }
+    }
+
+    // --- Website Content & Settings CMS ---
+    async function loadSettings() {
+      try {
+        const res = await fetch('/api/settings');
+        const data = await res.json();
+        if (data.success && data.data) {
+          siteSettings = data.data;
+          document.getElementById('settingHeroTag').value = siteSettings.hero_tag || '';
+          document.getElementById('settingHeroTitle').value = siteSettings.hero_title || '';
+          document.getElementById('settingHeroSubtitle').value = siteSettings.hero_subtitle || '';
+          document.getElementById('settingContactPhone').value = siteSettings.contact_phone || '';
+          document.getElementById('settingWhatsApp').value = siteSettings.whatsapp_number || '';
+          document.getElementById('settingContactEmail').value = siteSettings.contact_email || '';
+          document.getElementById('settingStatActive').value = siteSettings.stat_active_listings || '';
+          document.getElementById('settingStatHubs').value = siteSettings.stat_hubs || '';
+          document.getElementById('settingStatTrust').value = siteSettings.stat_trust || '';
+        }
+      } catch (e) {
+        showToast('Error loading settings');
+      }
+    }
+
+    async function saveSettings(e) {
+      if (e) e.preventDefault();
+      const topBtn = document.getElementById('saveSettingsTopBtn');
+      const bottomBtn = document.getElementById('saveSettingsBtnBottom');
+      topBtn.disabled = true;
+      bottomBtn.disabled = true;
+      bottomBtn.textContent = 'Saving Changes...';
+
+      const payload = {
+        hero_tag: document.getElementById('settingHeroTag').value.trim(),
+        hero_title: document.getElementById('settingHeroTitle').value.trim(),
+        hero_subtitle: document.getElementById('settingHeroSubtitle').value.trim(),
+        contact_phone: document.getElementById('settingContactPhone').value.trim(),
+        whatsapp_number: document.getElementById('settingWhatsApp').value.trim(),
+        contact_email: document.getElementById('settingContactEmail').value.trim(),
+        stat_active_listings: document.getElementById('settingStatActive').value.trim(),
+        stat_hubs: document.getElementById('settingStatHubs').value.trim(),
+        stat_trust: document.getElementById('settingStatTrust').value.trim()
+      };
+
+      try {
+        const res = await fetch('/api/settings', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (data.success) {
+          showToast('✅ Website content updated live!');
+        } else {
+          showToast('❌ ' + (data.message || 'Error updating settings'));
+        }
+      } catch (err) {
+        showToast('Error saving settings');
+      } finally {
+        topBtn.disabled = false;
+        bottomBtn.disabled = false;
+        bottomBtn.textContent = '💾 Save All Changes';
+      }
+    }
+
+    document.getElementById('settingsForm').addEventListener('submit', saveSettings);
+    document.getElementById('saveSettingsTopBtn').addEventListener('click', saveSettings);
+
+    // --- Leads & Inquiries ---
+    async function loadEnquiries() {
+      try {
+        const status = document.getElementById('enquiryFilterStatus').value;
+        const url = status ? `/api/enquiries?status=${status}` : '/api/enquiries';
+        const res = await fetch(url);
+        const data = await res.json();
+        if (data.success) {
+          enquiries = data.data;
+          renderEnquiriesTable();
+        }
+      } catch (e) {
+        showToast('Error loading leads');
+      }
+    }
+
+    function renderEnquiriesTable() {
+      const tbody = document.getElementById('enquiriesTableBody');
+      document.getElementById('enquiryCount').textContent = enquiries.length;
+
+      if (!enquiries.length) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:30px;color:var(--muted)">No leads recorded yet.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = enquiries.map(e => `
+        <tr>
+          <td><strong>${e.name}</strong></td>
+          <td><a href="tel:${e.phone}" style="color:#60a5fa;text-decoration:underline;">📞 ${e.phone}</a></td>
+          <td>
+            <strong>${e.property_title || 'General'}</strong>
+            ${e.message ? `<div style="font-size:11.5px;color:var(--muted);">${e.message}</div>` : ''}
+          </td>
+          <td style="font-size:12px;color:var(--muted)">${new Date(e.created_at).toLocaleDateString('en-IN')}</td>
+          <td>
+            <select onchange="updateEnquiryStatus(${e.id}, this.value)" style="padding:4px 8px;border-radius:6px;background:#0c1220;color:white;border:1px solid var(--card-border);font-size:12px;">
+              <option value="New" ${e.status === 'New' ? 'selected' : ''}>🟠 New</option>
+              <option value="Contacted" ${e.status === 'Contacted' ? 'selected' : ''}>🔵 Contacted</option>
+              <option value="Closed" ${e.status === 'Closed' ? 'selected' : ''}>⚪ Closed</option>
+            </select>
+          </td>
+          <td style="text-align:right">
+            <a href="https://wa.me/91${e.phone.replace(/[^0-9]/g,'')}?text=Hello%20${encodeURIComponent(e.name)},%20regarding%20your%20inquiry%20on%20Vasati%20Properties" target="_blank" class="btn btn-outline btn-sm" style="color:#34d399;">
+              💬 WhatsApp
+            </a>
+            <button class="btn btn-danger btn-sm" onclick="deleteEnquiry(${e.id})">🗑</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    document.getElementById('enquiryFilterStatus').addEventListener('change', loadEnquiries);
+
+    async function updateEnquiryStatus(id, status) {
+      try {
+        const res = await fetch(`/api/enquiries/${id}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status })
+        });
+        const d = await res.json();
+        if (d.success) {
+          showToast(`Status updated to ${status}`);
+          loadStats();
+        }
+      } catch (e) {
+        showToast('Error updating status');
+      }
+    }
+
+    async function deleteEnquiry(id) {
+      if (!confirm('Delete this inquiry?')) return;
+      try {
+        const res = await fetch(`/api/enquiries/${id}`, { method: 'DELETE' });
+        const d = await res.json();
+        if (d.success) {
+          showToast('Inquiry removed');
+          loadEnquiries();
+          loadStats();
+        }
+      } catch (e) {
+        showToast('Error deleting lead');
+      }
+    }
+
+    document.getElementById('refreshBtn').addEventListener('click', () => {
+      loadStats();
+      loadProperties();
+      loadSlides();
+      loadSettings();
+      loadEnquiries();
+      showToast('Data refreshed');
+    });
+
+    // Startup Initialization
+    loadStats();
+    loadProperties();
+    loadSlides();
+    loadSettings();
+    loadEnquiries();
+  </script>
+</body>
+</html>

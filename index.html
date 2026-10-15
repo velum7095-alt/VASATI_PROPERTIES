@@ -2,912 +2,1300 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f8f8f6">
-  <meta name="description" content="Explore sample buying and resale home listings across Bengaluru with Haven Realty, your local property agent.">
-  <title>Haven Realty — Bengaluru homes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#090d16">
+  <meta name="description" content="Discover premier residential properties, luxury villas, and verified resale homes across Bengaluru with Vasati Properties.">
+  <title>Vasati Properties — Premium Bengaluru Homes & Luxury Real Estate</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/images/logo.png">
+
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
   <style>
     :root {
-      color-scheme: light;
-      --ink: #14202b;
-      --muted: #65717c;
-      --blue: #1f5fbf;
-      --blue-dark: #174d9c;
-      --blue-pale: #edf4ff;
-      --amber: #f0a02c;
-      --line: #e5e8e8;
-      --paper: #fff;
-      --canvas: #f8f8f6;
-      --green: #19704d;
-      --radius: 14px;
-      --shadow: 0 12px 32px rgba(20, 32, 43, .1);
-      font-family: Inter, "Segoe UI", system-ui, -apple-system, sans-serif;
-      color: var(--ink);
-      background: var(--canvas);
-      font-synthesis: none;
-      text-rendering: optimizeLegibility;
+      --font: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --ink: #090d16;
+      --ink-muted: #526071;
+      --ink-light: #94a3b8;
+      --border: #e2e8f0;
+      --border-focus: #3b82f6;
+      
+      --primary: #1d4ed8;
+      --primary-hover: #1e40af;
+      --primary-pale: #eff6ff;
+      --primary-gradient: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+      
+      --accent: #d97706;
+      --accent-pale: #fef3c7;
+      
+      --emerald: #059669;
+      --emerald-pale: #ecfdf5;
+      
+      --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.05);
+      --shadow-md: 0 4px 16px -2px rgba(15, 23, 42, 0.08);
+      --shadow-lg: 0 16px 36px -6px rgba(15, 23, 42, 0.12);
+      --shadow-glow: 0 0 24px rgba(37, 99, 235, 0.22);
+      
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-full: 9999px;
     }
-    * { box-sizing: border-box; }
-    body { margin: 0; min-width: 320px; }
-    button, input, select { font: inherit; }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-family: var(--font); color: var(--ink); background: var(--bg); text-rendering: optimizeLegibility; }
+    body { min-height: 100vh; overflow-x: hidden; line-height: 1.5; }
+    button, input, select, textarea { font-family: inherit; color: inherit; }
     button, a { -webkit-tap-highlight-color: transparent; }
-    button { color: inherit; }
     a { color: inherit; text-decoration: none; }
-    img { display: block; max-width: 100%; }
-    :focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
-    .skip-link { position: absolute; z-index: 20; top: -60px; left: 12px; padding: 12px; background: white; }
-    .skip-link:focus { top: 12px; }
-    .wrap { width: min(1160px, calc(100% - 48px)); margin-inline: auto; }
-    .topbar { height: 70px; background: rgba(255,255,255,.96); border-bottom: 1px solid var(--line); }
-    .nav { height: 100%; display: flex; align-items: center; gap: 38px; }
-    .brand { display: inline-flex; align-items: center; gap: 9px; font-size: 21px; font-weight: 800; letter-spacing: -.8px; }
-    .brand-mark { width: 30px; height: 30px; display: grid; place-items: center; border-radius: 9px; background: var(--blue); color: white; }
-    .brand-mark svg { width: 19px; height: 19px; }
-    .nav-links { display: flex; gap: 27px; align-items: center; margin: 0; padding: 0; list-style: none; color: #4d5963; font-size: 14px; font-weight: 600; }
-    .nav-links a:hover { color: var(--blue); }
-    .nav-spacer { flex: 1; }
-    .nav-actions { display: flex; align-items: center; gap: 14px; }
-    .icon-btn { position: relative; width: 42px; height: 42px; border: 1px solid var(--line); border-radius: 50%; background: white; display: grid; place-items: center; cursor: pointer; }
+    img { display: block; max-width: 100%; height: auto; }
+    :focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+
+    .wrap { width: min(1200px, calc(100% - 40px)); margin-inline: auto; }
+
+    /* Top Navigation */
+    .topbar {
+      position: sticky; top: 0; z-index: 100;
+      height: 76px;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+      transition: box-shadow .2s ease;
+    }
+    .topbar.scrolled { box-shadow: var(--shadow-sm); }
+    .nav { height: 100%; display: flex; align-items: center; justify-content: space-between; }
+    
+    .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .brand-logo-img {
+      height: 48px; width: 48px; object-fit: contain; border-radius: 8px;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.12));
+      transition: transform .2s ease;
+    }
+    .brand:hover .brand-logo-img { transform: scale(1.04); }
+    .brand-text-block { display: flex; flex-direction: column; line-height: 1; }
+    .brand-name {
+      font-size: 20px; font-weight: 800; letter-spacing: 1.2px; color: #0b192c;
+    }
+    .brand-sub {
+      font-size: 9.5px; font-weight: 800; letter-spacing: 3px; color: var(--accent); margin-top: 3px;
+    }
+
+    .nav-links { display: flex; align-items: center; gap: 26px; list-style: none; font-size: 14px; font-weight: 600; color: var(--ink-muted); }
+    .nav-links a { transition: color .15s ease; }
+    .nav-links a:hover, .nav-links a.active { color: var(--primary); }
+
+    .nav-actions { display: flex; align-items: center; gap: 12px; }
+    .icon-btn {
+      position: relative; width: 42px; height: 42px;
+      border: 1px solid var(--border); border-radius: 50%;
+      background: white; display: grid; place-items: center;
+      cursor: pointer; transition: all .15s ease; color: var(--ink-muted);
+    }
+    .icon-btn:hover { border-color: #cbd5e1; color: var(--ink); transform: translateY(-1px); }
     .icon-btn svg { width: 19px; height: 19px; }
-    .fav-count { position: absolute; top: -4px; right: -4px; min-width: 17px; height: 17px; padding: 0 4px; border-radius: 20px; background: var(--blue); color: white; font-size: 10px; display: grid; place-items: center; }
-    .button { min-height: 44px; padding: 0 18px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 1px solid transparent; border-radius: 9px; background: var(--blue); color: white; font-weight: 700; cursor: pointer; transition: background .16s ease, transform .16s ease; }
-    .button:hover { background: var(--blue-dark); }
-    .button:active { transform: translateY(1px); }
-    .button svg { width: 17px; height: 17px; }
-    .button.outline { border-color: var(--line); background: white; color: var(--ink); }
-    .button.outline:hover { border-color: #bdc8d6; background: #f7faff; }
-    .button.small { min-height: 39px; padding-inline: 14px; font-size: 13px; }
-    .hero { padding: 30px 0 36px; overflow: hidden; background: #fff; }
-    .hero-heading { width: min(1200px, calc(100% - 48px)); margin: 0 auto 16px; }
-    .hero-heading h1 { margin: 0; font-size: clamp(25px, 3vw, 34px); line-height: 1.2; letter-spacing: -.9px; }
-    .hero-heading p { margin: 5px 0 0; color: var(--muted); font-size: 14px; }
-    .project-selector { width: min(1200px, calc(100% - 48px)); height: 73px; margin: 0 auto 8px; display: flex; align-items: end; justify-content: flex-end; gap: 12px; overflow: hidden; }
-    .project-tab { flex: 0 0 150px; padding: 0 0 7px; border: 0; border-bottom: 3px solid transparent; background: transparent; text-align: left; cursor: pointer; opacity: .68; }
-    .project-tab[aria-selected="true"] { border-bottom-color: #8760dc; opacity: 1; }
-    .project-tab img { width: 100%; height: 40px; margin-bottom: 4px; border-radius: 6px; object-fit: cover; }
-    .project-tab span { display: block; overflow: hidden; font-size: 12px; font-weight: 650; text-overflow: ellipsis; white-space: nowrap; }
-    .slider-viewport { position: relative; width: 100%; overflow: hidden; }
-    .slider-track { display: flex; align-items: stretch; gap: 34px; width: max-content; transition: transform .48s cubic-bezier(.22,.7,.25,1); }
-    .project-slide { flex: 0 0 min(1200px, calc(100vw - 160px)); height: 420px; display: grid; grid-template-columns: 30% 70%; overflow: hidden; border-radius: 22px; background: linear-gradient(145deg,#eadfff 0%,#f0c8db 58%,#f1b4ae 100%); }
-    .project-info { min-width: 0; padding: 30px 25px 25px; display: flex; flex-direction: column; align-items: flex-start; }
-    .builder-row { display: flex; align-items: center; gap: 13px; }
-    .builder-logo { flex: 0 0 67px; width: 67px; height: 67px; display: grid; place-items: center; border: 1px solid rgba(255,255,255,.8); border-radius: 17px; background: rgba(255,255,255,.83); color: #28343c; font-size: 12px; font-weight: 850; letter-spacing: -.5px; text-align: center; }
-    .builder-name { font-size: 15px; font-weight: 750; line-height: 1.35; }
-    .builder-link { display: inline-block; margin-top: 4px; color: #4d22c8; font-size: 12px; text-decoration: underline; text-underline-offset: 3px; }
-    .project-copy { margin-top: auto; padding-top: 17px; }
-    .project-copy h2 { margin: 0 0 3px; font-size: 22px; letter-spacing: -.45px; }
-    .project-location { color: #39434c; font-size: 14px; }
-    .project-price { margin-top: 25px; font-size: 20px; font-weight: 800; letter-spacing: -.45px; }
-    .project-facts { margin-top: 4px; color: #39434c; font-size: 13px; }
-    .project-offer { width: 100%; margin-top: 23px; padding: 9px 11px; border-radius: 8px; background: rgba(241,106,145,.22); color: #33313b; font-size: 11px; font-weight: 650; }
-    .project-contact { width: 100%; min-height: 48px; margin-top: 12px; border-radius: 10px; background: #5420d6; font-size: 14px; }
-    .project-contact:hover { background: #4317b8; }
-    .project-photo { min-width: 0; height: calc(100% - 14px); margin: 7px 7px 7px 0; overflow: hidden; border: 1px solid rgba(34,42,47,.22); border-radius: 17px; background: #d8e3e7; }
-    .project-photo img { width: 100%; height: 100%; object-fit: cover; }
-    .slider-arrow { position: absolute; z-index: 2; top: 50%; width: 58px; height: 58px; transform: translateY(-50%); display: grid; place-items: center; border: 0; border-radius: 50%; background: white; color: #667078; cursor: pointer; box-shadow: 0 3px 12px rgba(20,32,43,.2); }
-    .slider-arrow:hover { color: var(--blue); }
-    .slider-arrow svg { width: 25px; height: 25px; }
-    .slider-arrow.previous { left: max(16px, calc((100vw - 1200px) / 2 - 29px)); }
-    .slider-arrow.next { right: max(16px, calc((100vw - 1200px) / 2 - 29px)); }
-    .slider-pagination { position: absolute; z-index: 2; right: max(28px, calc((100vw - 1200px) / 2 + 20px)); bottom: 20px; display: flex; gap: 7px; align-items: center; }
-    .slider-dot { width: 8px; height: 8px; padding: 0; border: 0; border-radius: 9px; background: rgba(255,255,255,.75); cursor: pointer; transition: width .18s ease, background .18s ease; }
-    .slider-dot[aria-current="true"] { width: 22px; background: white; }
-    .search-box { width: min(1000px, calc(100% - 48px)); margin: 23px auto 0; padding: 12px; border: 1px solid var(--line); border-radius: 14px; background: white; color: var(--ink); box-shadow: 0 8px 24px rgba(20,32,43,.08); }
-    .search-tabs { display: flex; gap: 6px; padding: 0 4px 10px; border-bottom: 1px solid var(--line); }
-    .search-tab { position: relative; min-height: 34px; padding: 0 13px; border: 0; border-radius: 7px; background: transparent; color: var(--muted); font-size: 13px; font-weight: 700; cursor: pointer; }
-    .search-tab[aria-selected="true"] { background: var(--blue-pale); color: var(--blue); }
-    .search-fields { display: grid; grid-template-columns: 1.55fr 1fr 1fr auto; gap: 8px; padding-top: 10px; }
-    .field { min-width: 0; min-height: 54px; padding: 7px 13px; border-right: 1px solid var(--line); display: flex; flex-direction: column; justify-content: center; gap: 3px; }
-    .field:last-of-type { border-right: 0; }
-    .field label { color: var(--muted); font-size: 11px; font-weight: 700; }
-    .field input, .field select { width: 100%; min-width: 0; padding: 0; border: 0; outline: 0; background: transparent; color: var(--ink); font-size: 14px; font-weight: 650; }
-    .field input::placeholder { color: var(--ink); opacity: 1; }
-    .search-submit { min-width: 132px; align-self: stretch; }
-    .trust-row { display: flex; flex-wrap: wrap; gap: 20px 28px; align-items: center; width: min(1000px, calc(100% - 48px)); margin: 15px auto 0; color: var(--muted); font-size: 12px; font-weight: 650; }
-    .trust-item { display: inline-flex; align-items: center; gap: 7px; }
-    .trust-item svg { width: 16px; height: 16px; color: var(--green); }
-    main { padding: 42px 0 66px; }
-    .section-heading { display: flex; align-items: end; justify-content: space-between; gap: 16px; margin-bottom: 20px; }
-    .section-heading h2 { margin: 0; font-size: 24px; line-height: 1.2; letter-spacing: -.65px; }
-    .section-heading p { margin: 6px 0 0; color: var(--muted); font-size: 14px; }
-    .text-link { display: inline-flex; align-items: center; gap: 6px; color: var(--blue); font-size: 13px; font-weight: 700; white-space: nowrap; }
-    .text-link svg { width: 16px; height: 16px; }
-    .locality-row { display: flex; gap: 10px; margin: 25px 0 42px; overflow-x: auto; scrollbar-width: none; }
-    .locality-row::-webkit-scrollbar { display: none; }
-    .locality { min-width: max-content; padding: 10px 14px; border: 1px solid var(--line); border-radius: 30px; background: white; color: #43515c; font-size: 12px; font-weight: 650; cursor: pointer; }
-    .locality:hover, .locality[aria-pressed="true"] { border-color: #b8cdef; background: var(--blue-pale); color: var(--blue); }
-    .cards { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 20px; }
-    .property-card { min-width: 0; overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius); background: white; cursor: pointer; transition: box-shadow .18s ease, transform .18s ease; }
-    .property-card:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(20,32,43,.09); }
-    .photo-wrap { position: relative; aspect-ratio: 4/3; overflow: hidden; background: #e9edef; }
-    .photo-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform .35s ease; }
-    .property-card:hover .photo-wrap img { transform: scale(1.025); }
-    .badge { position: absolute; left: 12px; top: 12px; display: inline-flex; align-items: center; gap: 5px; min-height: 25px; padding: 0 9px; border-radius: 5px; background: white; color: #245b43; font-size: 10px; font-weight: 750; box-shadow: 0 2px 8px rgba(20,32,43,.12); }
-    .badge svg { width: 13px; height: 13px; }
-    .heart { position: absolute; top: 10px; right: 10px; width: 37px; height: 37px; display: grid; place-items: center; border: 0; border-radius: 50%; background: white; color: #40505c; cursor: pointer; box-shadow: 0 2px 8px rgba(20,32,43,.14); }
-    .heart svg { width: 19px; height: 19px; }
-    .heart[aria-pressed="true"] { color: #d74658; }
-    .heart[aria-pressed="true"] svg { fill: #d74658; }
-    .card-body { padding: 15px 16px 14px; }
-    .price-row { display: flex; align-items: baseline; gap: 7px; }
-    .price { font-size: 21px; font-weight: 800; letter-spacing: -.7px; }
-    .price-note { color: var(--muted); font-size: 11px; }
-    .property-title { margin: 7px 0 4px; overflow: hidden; font-size: 14px; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
-    .location { display: flex; align-items: center; gap: 5px; color: var(--muted); font-size: 12px; }
-    .location svg { width: 14px; height: 14px; }
-    .facts { display: flex; gap: 13px; margin: 14px 0 13px; padding: 11px 0; border-top: 1px solid #eff0f0; border-bottom: 1px solid #eff0f0; color: #4c5963; font-size: 11px; font-weight: 600; }
-    .facts span { display: inline-flex; align-items: center; gap: 5px; }
-    .facts svg { width: 14px; height: 14px; color: #77848e; }
-    .card-foot { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
-    .listed { color: #8a949b; font-size: 10px; }
-    .view-link { color: var(--blue); font-size: 12px; font-weight: 700; }
-    .empty-state { grid-column: 1/-1; padding: 48px 20px; border: 1px dashed #cbd2d6; border-radius: var(--radius); color: var(--muted); text-align: center; }
-    .empty-state strong { display: block; margin-bottom: 6px; color: var(--ink); }
-    .view-controls { display: flex; align-items: center; gap: 8px; }
-    .view-toggle { display: inline-flex; padding: 3px; border: 1px solid var(--line); border-radius: 9px; background: white; }
-    .view-toggle button { min-height: 34px; padding: 0 10px; border: 0; border-radius: 6px; background: transparent; color: var(--muted); font-size: 12px; font-weight: 700; cursor: pointer; }
-    .view-toggle button[aria-pressed="true"] { background: var(--blue-pale); color: var(--blue); }
-    .results-tools { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin: 18px 0 17px; }
-    .results-count { color: var(--muted); font-size: 13px; }
-    .results-count strong { color: var(--ink); }
-    .tool-group { display: flex; gap: 9px; align-items: center; }
-    .map-panel { display: none; position: relative; min-height: 380px; overflow: hidden; border: 1px solid #d6ddd9; border-radius: var(--radius); background-color: #e9eee7; background-image: linear-gradient(34deg, transparent 47%, rgba(255,255,255,.82) 48%, rgba(255,255,255,.82) 51%, transparent 52%), linear-gradient(116deg, transparent 47%, rgba(255,255,255,.72) 48%, rgba(255,255,255,.72) 50%, transparent 51%), linear-gradient(0deg, rgba(204,220,196,.65) 1px, transparent 1px), linear-gradient(90deg, rgba(204,220,196,.65) 1px, transparent 1px); background-size: 100% 100%,100% 100%,42px 42px,42px 42px; }
-    .map-panel.is-visible { display: block; }
-    .map-label { position: absolute; padding: 7px 10px; border: 1px solid rgba(255,255,255,.9); border-radius: 7px; background: rgba(255,255,255,.88); color: #68746e; font-size: 11px; font-weight: 650; box-shadow: 0 1px 4px rgba(20,32,43,.08); }
-    .map-pin { position: absolute; transform: translate(-50%,-50%); min-height: 34px; padding: 0 11px; border: 2px solid white; border-radius: 19px 19px 19px 4px; background: var(--blue); color: white; font-size: 12px; font-weight: 800; box-shadow: 0 3px 10px rgba(18,49,86,.22); cursor: pointer; }
-    .map-pin:hover { z-index: 2; background: var(--blue-dark); transform: translate(-50%,-50%) scale(1.06); }
-    .map-note { position: absolute; right: 12px; bottom: 12px; padding: 8px 11px; border-radius: 7px; background: white; color: var(--muted); font-size: 11px; }
-    .trust-band { margin-top: 46px; padding: 22px; display: flex; justify-content: space-between; gap: 16px; align-items: center; border: 1px solid var(--line); border-radius: var(--radius); background: white; }
-    .trust-band strong { font-size: 14px; }
-    .trust-band p { margin: 4px 0 0; color: var(--muted); font-size: 12px; }
-    .trust-numbers { display: flex; gap: clamp(16px,4vw,46px); }
-    .trust-number { display: grid; gap: 3px; }
-    .trust-number b { font-size: 14px; letter-spacing: -.2px; }
-    .trust-number span { color: var(--muted); font-size: 10px; }
-    footer { padding: 26px 0; border-top: 1px solid var(--line); background: white; color: var(--muted); font-size: 11px; }
-    .footer-inner { display: flex; justify-content: space-between; gap: 15px; }
-    .demo-note { margin-top: 8px; color: #8b9499; font-size: 10px; }
-    dialog { width: min(520px, calc(100% - 28px)); max-height: min(85vh, 740px); padding: 0; border: 0; border-radius: 16px; background: white; color: var(--ink); box-shadow: var(--shadow); }
-    dialog::backdrop { background: rgba(14,23,32,.52); backdrop-filter: blur(2px); }
-    .dialog-head { display: flex; align-items: center; justify-content: space-between; padding: 17px 20px; border-bottom: 1px solid var(--line); }
-    .dialog-head h2 { margin: 0; font-size: 17px; }
-    .close-btn { width: 36px; height: 36px; border: 1px solid var(--line); border-radius: 50%; background: white; cursor: pointer; }
-    .filter-content { padding: 18px 20px 20px; }
-    .filter-content h3 { margin: 0 0 12px; font-size: 13px; }
-    .filter-section { margin-bottom: 23px; }
-    .chip-options { display: flex; flex-wrap: wrap; gap: 8px; }
-    .filter-chip { min-height: 39px; padding: 0 13px; border: 1px solid var(--line); border-radius: 8px; background: white; color: #4e5961; font-size: 12px; font-weight: 650; cursor: pointer; }
-    .filter-chip[aria-pressed="true"] { border-color: var(--blue); background: var(--blue-pale); color: var(--blue); }
-    .range-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .range-row label { display: grid; gap: 6px; color: var(--muted); font-size: 11px; font-weight: 650; }
-    .range-row select { width: 100%; height: 43px; padding: 0 10px; border: 1px solid var(--line); border-radius: 8px; background: white; color: var(--ink); }
-    .filter-actions { display: flex; gap: 10px; padding-top: 14px; border-top: 1px solid var(--line); }
-    .filter-actions .button { flex: 1; }
-    #propertyPage[hidden] { display: none; }
-    .property-page { padding-top: 28px; }
-    .back-link { display: inline-flex; min-height: 40px; align-items: center; gap: 8px; margin-bottom: 18px; color: var(--blue); font-size: 13px; font-weight: 700; }
-    .detail-breadcrumb { margin-bottom: 12px; color: var(--muted); font-size: 12px; }
-    .detail-breadcrumb a { color: var(--blue); }
-    .detail-gallery { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(170px, .8fr); grid-template-rows: repeat(2, 185px); gap: 10px; overflow: hidden; border-radius: 16px; }
-    .detail-gallery img { width: 100%; height: 100%; object-fit: cover; background: #e9edef; }
-    .detail-gallery img:first-child { grid-row: 1 / 3; }
-    .detail-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; margin: 24px 0; }
-    .detail-heading h1 { margin: 0 0 7px; font-size: clamp(25px, 3vw, 34px); line-height: 1.2; letter-spacing: -.9px; }
-    .detail-address { display: flex; align-items: center; gap: 5px; color: var(--muted); font-size: 13px; }
-    .detail-address svg { width: 16px; height: 16px; }
-    .detail-price-block { min-width: 185px; text-align: right; }
-    .detail-price { font-size: 26px; font-weight: 800; letter-spacing: -.7px; }
-    .detail-price-note { margin-top: 3px; color: var(--muted); font-size: 12px; }
-    .property-layout { display: grid; grid-template-columns: minmax(0,1fr) 310px; gap: 24px; align-items: start; }
-    .property-sections { display: grid; gap: 16px; }
-    .detail-card, .agent-card { padding: 21px; border: 1px solid var(--line); border-radius: 13px; background: white; }
-    .detail-card h2, .agent-card h2 { margin: 0 0 16px; font-size: 18px; letter-spacing: -.3px; }
-    .detail-spec { padding: 11px; border-radius: 8px; background: #f5f7f7; }
-    .detail-spec b { display: block; font-size: 13px; }
-    .detail-spec span { color: var(--muted); font-size: 10px; }
-    .spec-grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 10px; }
-    .spec-item { min-height: 69px; padding: 12px; border-radius: 9px; background: #f6f8f8; }
-    .spec-item strong { display: block; font-size: 14px; }
-    .spec-item span { display: block; margin-top: 4px; color: var(--muted); font-size: 11px; }
-    .detail-copy { color: #53606a; font-size: 13px; line-height: 1.7; }
-    .amenities { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 12px; margin: 0; padding: 0; list-style: none; }
-    .amenities li { display: flex; align-items: center; gap: 8px; color: #46525b; font-size: 12px; }
-    .amenities li::before { width: 7px; height: 7px; flex: 0 0 7px; border-radius: 50%; background: #3c936d; content: ""; }
-    .location-preview { min-height: 170px; padding: 18px; display: flex; align-items: flex-end; border-radius: 10px; background: linear-gradient(135deg,rgba(36,70,52,.1),rgba(36,70,52,.42)), repeating-linear-gradient(0deg,transparent 0 38px,#ffffff8c 39px 41px),repeating-linear-gradient(90deg,#e9eee7 0 48px,#ffffffb0 49px 52px); }
-    .location-preview span { padding: 8px 11px; border-radius: 7px; background: white; color: var(--ink); font-size: 12px; font-weight: 700; }
-    .agent-card { position: sticky; top: 18px; }
-    .agent-tag { margin: -7px 0 15px; color: var(--muted); font-size: 12px; }
-    .agent-card .button { width: 100%; margin-top: 10px; }
-    .agent-form { display: grid; gap: 10px; }
-    .agent-form label { display: grid; gap: 5px; color: var(--muted); font-size: 11px; font-weight: 650; }
-    .agent-form input { width: 100%; min-height: 43px; padding: 0 11px; border: 1px solid var(--line); border-radius: 8px; color: var(--ink); }
-    .related-listings { margin-top: 35px; }
-    .related-listings h2 { font-size: 22px; }
-    .property-page .mobile-bottom { display: none; }
-    .toast { position: fixed; z-index: 30; bottom: 22px; left: 50%; max-width: calc(100% - 28px); padding: 12px 17px; transform: translate(-50%, 16px); border-radius: 9px; background: #172832; color: white; font-size: 13px; opacity: 0; pointer-events: none; transition: opacity .18s ease, transform .18s ease; box-shadow: var(--shadow); }
-    .toast.show { transform: translate(-50%,0); opacity: 1; }
-    .mobile-bottom { display: none; }
-    @media (max-width: 800px) {
-      .wrap { width: min(100% - 36px, 680px); }
-      .nav { gap: 18px; }
-      .nav-links { gap: 17px; }
-      .hero-heading, .project-selector { width: calc(100% - 36px); }
-      .project-slide { flex-basis: calc(100vw - 100px); height: 385px; grid-template-columns: 35% 65%; }
-      .project-info { padding: 24px 19px 20px; }
-      .builder-logo { flex-basis: 56px; width: 56px; height: 56px; font-size: 10px; }
-      .builder-name { font-size: 13px; }
-      .project-copy h2 { font-size: 19px; }
-      .project-price { margin-top: 18px; font-size: 18px; }
-      .project-offer { margin-top: 17px; font-size: 10px; }
-      .slider-arrow.previous { left: 13px; }
-      .slider-arrow.next { right: 13px; }
-      .search-box, .trust-row { width: calc(100% - 36px); }
-      .property-layout { grid-template-columns: minmax(0,1fr) 270px; gap: 16px; }
-      .detail-gallery { grid-template-rows: repeat(2,150px); }
-      .spec-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
-      .amenities { grid-template-columns: repeat(2,minmax(0,1fr)); }
-      .search-fields { grid-template-columns: 1.2fr 1fr; }
-      .field:nth-child(2) { border-right: 0; }
-      .field:nth-child(3) { border-top: 1px solid var(--line); }
-      .search-submit { grid-column: 2; grid-row: 2; }
-      .cards { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 14px; }
-      .trust-band { align-items: flex-start; flex-direction: column; }
+    .badge-count {
+      position: absolute; top: -3px; right: -3px;
+      min-width: 18px; height: 18px; padding: 0 5px;
+      border-radius: 20px; background: var(--primary); color: white;
+      font-size: 10.5px; font-weight: 800; display: grid; place-items: center;
     }
-    @media (max-width: 580px) {
-      .wrap { width: calc(100% - 32px); }
-      .topbar { height: 60px; }
-      .nav { gap: 10px; }
-      .brand { font-size: 19px; }
+
+    /* Primary and Secondary Buttons */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      min-height: 44px; padding: 0 20px; border-radius: 10px;
+      font-size: 14px; font-weight: 700; cursor: pointer;
+      border: 1px solid transparent; transition: all .18s ease; text-decoration: none;
+    }
+    .btn-primary {
+      background: var(--primary-gradient); color: white;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.24);
+    }
+    .btn-primary:hover { background: var(--primary-hover); transform: translateY(-1px); box-shadow: 0 6px 18px rgba(37, 99, 235, 0.35); }
+    .btn-outline {
+      background: white; border-color: var(--border); color: var(--ink);
+    }
+    .btn-outline:hover { border-color: #cbd5e1; background: #f8fafc; }
+    .btn-whatsapp {
+      background: #25d366; color: white; border: none; font-weight: 700;
+    }
+    .btn-whatsapp:hover { background: #20ba59; }
+    .btn-sm { min-height: 38px; padding: 0 14px; font-size: 13px; }
+
+    /* Hero Section */
+    .hero {
+      position: relative;
+      padding: 38px 0 32px;
+      background: radial-gradient(100% 80% at 50% 0%, rgba(239, 246, 255, 0.7) 0%, rgba(248, 250, 252, 0) 100%);
+      overflow: hidden;
+    }
+    .hero-header { text-align: center; max-width: 760px; margin: 0 auto 28px; }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 14px; border-radius: var(--radius-full);
+      background: var(--primary-pale); color: var(--primary);
+      font-size: 12px; font-weight: 700; letter-spacing: 0.2px;
+      margin-bottom: 14px; border: 1px solid rgba(191, 219, 254, 0.6);
+    }
+    .hero-header h1 {
+      font-size: clamp(28px, 4.2vw, 46px); font-weight: 800;
+      letter-spacing: -1.2px; line-height: 1.15; color: var(--ink);
+    }
+    .hero-header p {
+      margin-top: 10px; font-size: clamp(14px, 1.8vw, 16px);
+      color: var(--ink-muted); font-weight: 500;
+    }
+
+    /* Hero Carousel / Slider */
+    .hero-slider-wrap {
+      max-width: 1160px; margin: 0 auto 36px;
+      position: relative; border-radius: var(--radius-lg);
+      overflow: hidden; box-shadow: var(--shadow-lg);
+      border: 1px solid var(--border);
+    }
+    .slider-viewport { position: relative; width: 100%; height: 420px; overflow: hidden; background: #0f172a; }
+    .slider-track { display: flex; height: 100%; transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1); }
+    .slide-item {
+      flex: 0 0 100%; width: 100%; height: 100%; position: relative;
+      display: grid; grid-template-columns: 42% 58%; overflow: hidden;
+    }
+    .slide-info {
+      padding: 40px; background: white; display: flex; flex-direction: column; justify-content: center;
+      position: relative; z-index: 2;
+    }
+    .slide-partner {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 5px 11px; border-radius: 6px; background: #f1f5f9;
+      color: #334155; font-size: 11px; font-weight: 700; margin-bottom: 16px;
+    }
+    .slide-title { font-size: 26px; font-weight: 800; letter-spacing: -0.6px; line-height: 1.2; }
+    .slide-location { display: flex; align-items: center; gap: 5px; color: var(--ink-muted); font-size: 13.5px; margin-top: 6px; }
+    .slide-specs { display: flex; gap: 14px; margin: 18px 0; font-size: 13px; font-weight: 600; color: #475569; }
+    .slide-price { font-size: 24px; font-weight: 800; color: var(--primary); letter-spacing: -0.5px; }
+    .slide-offer {
+      margin-top: 14px; padding: 10px 14px; border-radius: var(--radius-sm);
+      background: var(--accent-pale); color: #92400e; font-size: 12px; font-weight: 700;
+    }
+    .slide-img-box { position: relative; width: 100%; height: 100%; background: #0f172a; }
+    .slide-img-box img { width: 100%; height: 100%; object-fit: cover; }
+    .slide-img-box::after {
+      content: ""; position: absolute; inset: 0;
+      background: linear-gradient(90deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0) 50%);
+    }
+
+    .slider-nav-btn {
+      position: absolute; top: 50%; transform: translateY(-50%); z-index: 10;
+      width: 48px; height: 48px; border-radius: 50%; border: none;
+      background: rgba(255, 255, 255, 0.9); color: var(--ink);
+      display: grid; place-items: center; cursor: pointer;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.18); transition: all .15s ease;
+    }
+    .slider-nav-btn:hover { background: white; color: var(--primary); transform: translateY(-50%) scale(1.05); }
+    .slider-prev { left: 16px; }
+    .slider-next { right: 16px; }
+
+    .slider-indicators {
+      position: absolute; bottom: 16px; right: 20px; z-index: 10;
+      display: flex; gap: 6px;
+    }
+    .indicator-dot {
+      width: 8px; height: 8px; border-radius: 20px; background: rgba(255, 255, 255, 0.6);
+      border: 0; cursor: pointer; transition: all .2s ease;
+    }
+    .indicator-dot.active { width: 24px; background: white; }
+
+    /* Luxury Search Engine Bar */
+    .search-card {
+      max-width: 980px; margin: -10px auto 0;
+      background: white; border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 18px 24px 22px;
+      box-shadow: var(--shadow-lg);
+      position: relative; z-index: 20;
+    }
+    .search-tabs {
+      display: flex; gap: 8px; margin-bottom: 16px;
+      border-bottom: 1px solid var(--border); padding-bottom: 12px;
+    }
+    .tab-pill {
+      padding: 8px 18px; border-radius: var(--radius-full);
+      border: 1px solid transparent; background: transparent;
+      font-size: 13.5px; font-weight: 700; color: var(--ink-muted);
+      cursor: pointer; transition: all .15s ease;
+    }
+    .tab-pill:hover { color: var(--ink); background: #f1f5f9; }
+    .tab-pill.active {
+      background: var(--primary-pale); color: var(--primary);
+      border-color: rgba(191, 219, 254, 0.8);
+    }
+    .search-grid {
+      display: grid; grid-template-columns: 1.8fr 1.2fr 1.2fr auto;
+      gap: 12px; align-items: flex-end;
+    }
+    .input-box { display: flex; flex-direction: column; gap: 6px; }
+    .input-box label { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: var(--ink-muted); }
+    .input-box input, .input-box select {
+      height: 48px; padding: 0 14px;
+      border: 1px solid var(--border); border-radius: 10px;
+      background: #f8fafc; font-size: 14px; font-weight: 600;
+      transition: all .15s ease;
+    }
+    .input-box input:focus, .input-box select:focus {
+      background: white; border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    }
+    .search-submit-btn {
+      height: 48px; min-width: 140px;
+      border-radius: 10px; font-size: 14px;
+    }
+
+    /* Locality Selector / Chips */
+    .localities-strip {
+      display: flex; gap: 10px; overflow-x: auto;
+      padding: 16px 0 24px; scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    .localities-strip::-webkit-scrollbar { display: none; }
+    .locality-chip {
+      white-space: nowrap; padding: 10px 18px; border-radius: var(--radius-full);
+      background: white; border: 1px solid var(--border);
+      font-size: 13px; font-weight: 600; color: var(--ink-muted);
+      cursor: pointer; transition: all .15s ease; display: inline-flex; align-items: center; gap: 6px;
+    }
+    .locality-chip:hover { border-color: #cbd5e1; color: var(--ink); transform: translateY(-1px); }
+    .locality-chip.active {
+      background: var(--ink); color: white; border-color: var(--ink);
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.2);
+    }
+
+    /* Section Headers */
+    .section-header {
+      display: flex; justify-content: space-between; align-items: flex-end;
+      margin-bottom: 24px;
+    }
+    .section-header h2 { font-size: 24px; font-weight: 800; letter-spacing: -0.6px; }
+    .section-header p { font-size: 14px; color: var(--ink-muted); margin-top: 4px; }
+    .results-bar {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 20px; font-size: 13px; color: var(--ink-muted);
+    }
+    .results-bar strong { color: var(--ink); }
+
+    /* Property Cards Grid */
+    .property-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 26px;
+      margin-bottom: 50px;
+    }
+    .property-card {
+      background: white; border-radius: var(--radius-md);
+      border: 1px solid var(--border); overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+      cursor: pointer; display: flex; flex-direction: column;
+    }
+    .property-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+      border-color: #cbd5e1;
+    }
+    .card-photo-wrap {
+      position: relative; aspect-ratio: 16/10; overflow: hidden; background: #e2e8f0;
+    }
+    .card-photo-wrap img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+    .property-card:hover .card-photo-wrap img { transform: scale(1.04); }
+
+    .card-status-badge {
+      position: absolute; top: 12px; left: 12px; z-index: 2;
+      padding: 5px 10px; border-radius: 6px;
+      background: rgba(255, 255, 255, 0.94); backdrop-filter: blur(4px);
+      font-size: 11px; font-weight: 800; color: #0f172a;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      display: inline-flex; align-items: center; gap: 4px;
+    }
+    .card-heart-btn {
+      position: absolute; top: 12px; right: 12px; z-index: 2;
+      width: 36px; height: 36px; border-radius: 50%; border: none;
+      background: rgba(255, 255, 255, 0.94); backdrop-filter: blur(4px);
+      display: grid; place-items: center; cursor: pointer;
+      color: #64748b; box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: transform .15s ease, color .15s ease;
+    }
+    .card-heart-btn:active { transform: scale(0.9); }
+    .card-heart-btn.saved { color: #ef4444; }
+    .card-heart-btn.saved svg { fill: #ef4444; }
+
+    .card-body { padding: 18px 20px 20px; display: flex; flex-direction: column; flex: 1; }
+    .card-price-row { display: flex; justify-content: space-between; align-items: baseline; }
+    .card-price { font-size: 23px; font-weight: 800; letter-spacing: -0.6px; color: var(--ink); }
+    .card-price-sqft { font-size: 12px; color: var(--ink-muted); font-weight: 600; }
+    
+    .card-title { font-size: 16px; font-weight: 700; color: var(--ink); margin: 6px 0 4px; line-height: 1.3; }
+    .card-loc { display: flex; align-items: center; gap: 4px; font-size: 12.5px; color: var(--ink-muted); }
+    
+    .card-specs-bar {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+      margin: 16px 0; padding: 10px 0;
+      border-top: 1px solid #f1f5f9; border-bottom: 1px solid #f1f5f9;
+      text-align: center;
+    }
+    .spec-unit span { display: block; font-size: 11px; color: var(--ink-light); font-weight: 600; }
+    .spec-unit strong { font-size: 13.5px; font-weight: 700; color: var(--ink); }
+
+    .card-footer {
+      display: flex; gap: 8px; align-items: center; margin-top: auto;
+    }
+    .card-footer .btn { flex: 1; min-height: 40px; font-size: 13px; }
+
+    /* Interactive Mortgage / EMI Calculator Widget */
+    .calculator-section {
+      background: white; border: 1px solid var(--border);
+      border-radius: var(--radius-lg); padding: 36px;
+      margin: 40px 0; box-shadow: var(--shadow-sm);
+    }
+    .calc-header { margin-bottom: 24px; text-align: center; }
+    .calc-header h2 { font-size: 24px; font-weight: 800; }
+    .calc-header p { font-size: 14px; color: var(--ink-muted); margin-top: 4px; }
+    .calc-layout { display: grid; grid-template-columns: 1.4fr 1fr; gap: 36px; align-items: center; }
+    .calc-controls { display: flex; flex-direction: column; gap: 20px; }
+    .calc-group label { display: flex; justify-content: space-between; font-size: 13px; font-weight: 700; margin-bottom: 8px; }
+    .calc-group input[type="range"] {
+      width: 100%; height: 6px; border-radius: 4px; background: #e2e8f0; accent-color: var(--primary); outline: none; cursor: pointer;
+    }
+    .calc-result-card {
+      background: var(--ink); color: white; border-radius: var(--radius-md);
+      padding: 30px; text-align: center; box-shadow: var(--shadow-md);
+    }
+    .calc-emi-label { font-size: 13px; color: #94a3b8; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+    .calc-emi-amount { font-size: 38px; font-weight: 800; color: #38bdf8; margin: 8px 0 16px; letter-spacing: -1px; }
+    .calc-breakdown { display: flex; justify-content: space-around; border-top: 1px solid rgba(255,255,255,0.12); padding-top: 16px; font-size: 12px; }
+    .calc-breakdown div span { display: block; color: #94a3b8; margin-bottom: 4px; }
+    .calc-breakdown div strong { font-size: 15px; font-weight: 700; color: white; }
+
+    /* Property Detail Page Container */
+    #propertyDetailView { display: none; padding: 24px 0 60px; }
+    #propertyDetailView.active { display: block; }
+    .detail-back-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 13.5px; font-weight: 700; color: var(--primary);
+      background: none; border: none; cursor: pointer; margin-bottom: 20px;
+    }
+    .detail-gallery-grid {
+      display: grid; grid-template-columns: 2fr 1fr; gap: 14px;
+      height: 440px; border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 28px;
+    }
+    .gallery-main { width: 100%; height: 100%; object-fit: cover; }
+    .gallery-thumbs { display: grid; grid-template-rows: 1fr 1fr; gap: 14px; height: 100%; }
+    .gallery-thumbs img { width: 100%; height: 100%; object-fit: cover; }
+
+    .detail-layout { display: grid; grid-template-columns: 1fr 360px; gap: 32px; align-items: flex-start; }
+    .detail-card {
+      background: white; border: 1px solid var(--border); border-radius: var(--radius-md);
+      padding: 26px; margin-bottom: 20px;
+    }
+    .detail-card h3 { font-size: 19px; font-weight: 800; margin-bottom: 16px; letter-spacing: -0.4px; }
+    
+    .amenities-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px; }
+    .amenity-item { display: flex; align-items: center; gap: 10px; font-size: 13.5px; font-weight: 600; color: #334155; }
+    .amenity-icon { width: 28px; height: 28px; border-radius: 6px; background: var(--emerald-pale); color: var(--emerald); display: grid; place-items: center; }
+
+    .booking-card {
+      position: sticky; top: 90px;
+      background: white; border: 1px solid var(--border); border-radius: var(--radius-lg);
+      padding: 26px; box-shadow: var(--shadow-md);
+    }
+    .booking-price { font-size: 28px; font-weight: 800; color: var(--ink); }
+    .booking-form { display: flex; flex-direction: column; gap: 12px; margin-top: 18px; }
+    .booking-form input, .booking-form select, .booking-form textarea {
+      padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 13.5px;
+    }
+
+    /* Mobile Bottom Navigation Bar */
+    .mobile-bar {
+      display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 90;
+      height: 60px; background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px); border-top: 1px solid var(--border);
+      justify-content: space-around; align-items: center;
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+    .mobile-tab {
+      display: flex; flex-direction: column; align-items: center; gap: 3px;
+      background: none; border: none; font-size: 10.5px; font-weight: 700;
+      color: var(--ink-muted); cursor: pointer;
+    }
+    .mobile-tab.active { color: var(--primary); }
+    .mobile-tab svg { width: 20px; height: 20px; }
+
+    /* Footer */
+    footer {
+      background: white; border-top: 1px solid var(--border);
+      padding: 40px 0 50px; font-size: 13px; color: var(--ink-muted);
+    }
+    .footer-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+
+    /* Floating Toast */
+    .toast-box {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px);
+      background: #090d16; color: white; padding: 12px 22px; border-radius: 10px;
+      font-size: 13.5px; font-weight: 600; box-shadow: var(--shadow-lg);
+      opacity: 0; pointer-events: none; transition: all .2s ease; z-index: 1000;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .toast-box.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* Responsive Breakpoints */
+    @media (max-width: 900px) {
+      .search-grid { grid-template-columns: 1fr 1fr; }
+      .search-submit-btn { grid-column: span 2; }
+      .slide-item { grid-template-columns: 1fr; }
+      .slide-img-box { display: none; }
+      .slider-viewport { height: 360px; }
+      .calc-layout { grid-template-columns: 1fr; }
+      .detail-layout { grid-template-columns: 1fr; }
+      .detail-gallery-grid { height: 320px; grid-template-columns: 1fr; }
+      .gallery-thumbs { display: none; }
+    }
+    @media (max-width: 640px) {
+      .wrap { width: calc(100% - 28px); }
+      .topbar { height: 64px; }
       .nav-links { display: none; }
-      .nav-spacer { flex: 1; }
-      .nav-actions { gap: 9px; }
-      .nav-contact { display: none; }
-      .icon-btn { width: 40px; height: 40px; }
-      .hero { padding: 22px 0 28px; }
-      .hero-heading, .project-selector { width: calc(100% - 32px); }
-      .hero-heading { margin-bottom: 10px; }
-      .hero-heading h1 { font-size: 25px; letter-spacing: -.65px; }
-      .hero-heading p { font-size: 12px; }
-      .project-selector { height: 61px; margin-bottom: 8px; justify-content: flex-start; gap: 10px; }
-      .project-tab { flex-basis: 120px; }
-      .project-tab img { height: 32px; }
-      .project-tab span { font-size: 10px; }
-      .slider-track { gap: 12px; }
-      .project-slide { flex-basis: calc(100vw - 32px); height: auto; min-height: 0; grid-template-columns: 1fr; border-radius: 17px; }
-      .project-photo { grid-row: 1; height: 235px; margin: 6px 6px 0; border-radius: 13px; }
-      .project-info { grid-row: 2; padding: 15px 16px 16px; }
-      .builder-logo { flex-basis: 48px; width: 48px; height: 48px; border-radius: 12px; }
-      .builder-row { gap: 10px; }
-      .builder-name { font-size: 12px; }
-      .builder-link { font-size: 10px; }
-      .project-copy { width: 100%; padding-top: 13px; }
-      .project-copy h2 { font-size: 18px; }
-      .project-location { font-size: 12px; }
-      .project-price { margin-top: 12px; font-size: 17px; }
-      .project-facts { font-size: 11px; }
-      .project-offer { margin-top: 12px; padding: 8px 10px; }
-      .project-contact { min-height: 44px; margin-top: 9px; }
-      .slider-arrow { width: 42px; height: 42px; }
-      .slider-arrow svg { width: 21px; height: 21px; }
-      .slider-arrow.previous { left: 8px; }
-      .slider-arrow.next { right: 8px; }
-      .slider-pagination { right: 17px; bottom: auto; top: 205px; }
-      .search-box { width: calc(100% - 32px); margin-top: 18px; padding: 9px; border-radius: 12px; }
-      .trust-row { width: calc(100% - 32px); margin-top: 12px; }
-      .property-page { padding-top: 20px; padding-bottom: 92px; }
-      .detail-gallery { grid-template-columns: 1fr 1fr; grid-template-rows: 220px 92px; gap: 6px; border-radius: 11px; }
-      .detail-gallery img:first-child { grid-column: 1/-1; grid-row: 1; }
-      .detail-top { flex-direction: column; gap: 12px; margin: 19px 0; }
-      .detail-heading h1 { font-size: 24px; }
-      .detail-price-block { text-align: left; }
-      .detail-price { font-size: 23px; }
-      .property-layout { grid-template-columns: 1fr; }
-      .property-sections { gap: 12px; }
-      .detail-card, .agent-card { padding: 16px; }
-      .detail-card h2, .agent-card h2 { font-size: 17px; }
-      .spec-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
-      .amenities { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px 8px; }
-      .agent-card { position: static; }
-      .property-page .mobile-bottom { position: fixed; z-index: 10; right: 0; bottom: 0; left: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 9px; padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); border-top: 1px solid var(--line); background: rgba(255,255,255,.97); box-shadow: 0 -5px 18px rgba(20,32,43,.06); }
-      .search-tabs { gap: 3px; padding-bottom: 8px; }
-      .search-tab { flex: 1; padding-inline: 8px; font-size: 12px; }
-      .search-fields { grid-template-columns: 1fr 1fr; gap: 0 5px; padding-top: 5px; }
-      .field { min-height: 53px; padding-inline: 8px; }
-      .field:first-child { grid-column: 1/-1; border-right: 0; border-bottom: 1px solid var(--line); }
-      .field:nth-child(2) { border-right: 1px solid var(--line); }
-      .field:nth-child(3) { border-top: 0; }
-      .field label { font-size: 10px; }
-      .field input, .field select { font-size: 13px; }
-      .search-submit { grid-column: 1/-1; grid-row: auto; min-height: 46px; margin-top: 6px; }
-      .trust-row { gap: 11px 16px; margin-top: 12px; font-size: 10px; }
-      .trust-item svg { width: 14px; height: 14px; }
-      main { padding: 32px 0 80px; }
-      .section-heading { align-items: flex-start; }
-      .section-heading h2 { font-size: 21px; }
-      .section-heading p { font-size: 12px; }
-      .section-heading .text-link { margin-top: 4px; }
-      .locality-row { margin: 20px 0 32px; }
-      .cards { grid-template-columns: 1fr; gap: 12px; }
-      .property-card { display: grid; grid-template-columns: 40% 1fr; }
-      .photo-wrap { aspect-ratio: auto; min-height: 100%; }
-      .photo-wrap img { position: absolute; inset: 0; }
-      .badge { top: 8px; left: 8px; min-height: 22px; padding-inline: 7px; font-size: 9px; }
-      .badge svg { width: 11px; height: 11px; }
-      .heart { width: 32px; height: 32px; top: 7px; right: 7px; }
-      .heart svg { width: 17px; height: 17px; }
-      .card-body { padding: 11px 11px 10px; }
-      .price { font-size: 18px; }
-      .price-note { font-size: 9px; }
-      .property-title { font-size: 12px; margin: 5px 0 3px; }
-      .location { font-size: 10px; }
-      .facts { gap: 8px; margin: 10px 0 9px; padding: 8px 0; font-size: 9px; }
-      .facts svg { width: 12px; height: 12px; }
-      .listed { font-size: 8px; }
-      .view-link { font-size: 10px; }
-      .results-tools { align-items: flex-start; flex-direction: column; }
-      .tool-group { width: 100%; justify-content: space-between; }
-      .view-controls { flex: 1; justify-content: flex-end; }
-      .map-panel { min-height: 340px; }
-      .trust-band { margin-top: 34px; padding: 17px; }
-      .trust-numbers { width: 100%; justify-content: space-between; gap: 10px; }
-      .trust-number b { font-size: 16px; }
-      .footer-inner { flex-direction: column; }
-      .mobile-bottom { position: fixed; z-index: 10; right: 0; bottom: 0; left: 0; display: grid; grid-template-columns: 1fr 1.35fr; gap: 9px; padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); border-top: 1px solid var(--line); background: rgba(255,255,255,.97); box-shadow: 0 -5px 18px rgba(20,32,43,.06); }
-      .mobile-bottom .button { min-height: 44px; }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
+      .search-grid { grid-template-columns: 1fr; }
+      .search-submit-btn { grid-column: span 1; }
+      .property-grid { grid-template-columns: 1fr; }
+      .mobile-bar { display: flex; }
+      body { padding-bottom: 60px; }
+      .calculator-section { padding: 22px; }
     }
   </style>
 </head>
 <body>
-  <a class="skip-link" href="#main">Skip to content</a>
-  <header class="topbar">
-    <nav class="nav wrap" aria-label="Main navigation">
-      <a class="brand" href="#" aria-label="Haven home">
-        <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="m3.5 11 8.5-7 8.5 7M6.5 9.2V20h11V9.2M10 20v-6h4v6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-        haven<span style="color:var(--blue)">.</span>
+
+  <!-- Top Navigation Bar -->
+  <header class="topbar" id="topbar">
+    <nav class="nav wrap" aria-label="Main Navigation">
+      <a href="#" class="brand">
+        <img src="/images/logo.png" alt="Vasati Properties Logo" class="brand-logo-img">
+        <div class="brand-text-block">
+          <span class="brand-name">VASATI</span>
+          <span class="brand-sub">PROPERTIES</span>
+        </div>
       </a>
+
       <ul class="nav-links">
-        <li><a href="#homes" data-kind="Buy">Buy</a></li>
-        <li><a href="#homes" data-kind="Resale">Resale</a></li>
-        <li><a href="#homes" data-kind="Villas">Villas</a></li>
-        <li><a href="#trust">Guides</a></li>
-        <li><a href="#trust">About</a></li>
+        <li><a href="#propertiesSection" data-tab-filter="Buy">New Developments</a></li>
+        <li><a href="#propertiesSection" data-tab-filter="Resale">Resale Homes</a></li>
+        <li><a href="#propertiesSection" data-tab-filter="Villa">Luxury Villas</a></li>
+        <li><a href="#emiCalculator">EMI Calculator</a></li>
       </ul>
-      <span class="nav-spacer"></span>
+
       <div class="nav-actions">
-        <button class="icon-btn" id="savedButton" aria-label="Show saved homes" title="Saved homes">
-          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.8 8.8c0 5.2-8.8 10.2-8.8 10.2S3.2 14 3.2 8.8a4.4 4.4 0 0 1 8.8-1.1 4.4 4.4 0 0 1 8.8 1.1Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
-          <span class="fav-count" id="favCount" aria-live="polite">0</span>
+        <button class="icon-btn" id="favTrigger" title="View Saved Homes" aria-label="Favorites">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+          </svg>
+          <span class="badge-count" id="favCount">0</span>
         </button>
-        <a class="button small nav-contact" href="#homes">Explore Bengaluru homes</a>
+        <a href="#propertiesSection" class="btn btn-primary btn-sm">Explore Listings</a>
       </div>
     </nav>
   </header>
 
+  <!-- HOME VIEW SURFACE -->
   <div id="homeSurface">
-  <section class="hero" aria-labelledby="heroTitle">
-    <div class="hero-heading">
-      <h1 id="heroTitle">Explore top living options with us</h1>
-      <p>Your Bengaluru property agent for buying, resale, and family homes.</p>
-    </div>
-    <div class="project-selector" role="tablist" aria-label="Featured projects">
-      <button class="project-tab" type="button" role="tab" aria-selected="true" aria-controls="projectSlide0" data-slide="0">
-        <img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&amp;fit=crop&amp;w=300&amp;q=70" alt="" loading="lazy"><span>Whitefield</span>
-      </button>
-      <button class="project-tab" type="button" role="tab" aria-selected="false" aria-controls="projectSlide1" data-slide="1">
-        <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&amp;fit=crop&amp;w=300&amp;q=70" alt="" loading="lazy"><span>Sarjapur Road</span>
-      </button>
-      <button class="project-tab" type="button" role="tab" aria-selected="false" aria-controls="projectSlide2" data-slide="2">
-        <img src="https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&amp;fit=crop&amp;w=300&amp;q=70" alt="" loading="lazy"><span>HSR Layout</span>
-      </button>
-    </div>
-    <div class="slider-viewport" id="projectSlider" aria-label="Featured Bengaluru property listings" tabindex="0">
-      <div class="slider-track" id="sliderTrack">
-        <article class="project-slide" id="projectSlide0" role="tabpanel" aria-label="Whitefield apartment listing">
-          <div class="project-info">
-            <div class="builder-row"><div class="builder-logo" aria-hidden="true">HAVEN<br>REALTY</div><div><div class="builder-name">Haven Realty<br>Bengaluru property agent</div><a class="builder-link" href="#homes">Browse listings</a></div></div>
-            <div class="project-copy"><h2>Modern living in Whitefield</h2><div class="project-location">Whitefield, East Bengaluru</div><div class="project-price">₹95 L – ₹1.35 Cr</div><div class="project-facts">2, 3 BHK apartments</div><div class="project-offer">✦ Agent-curated listing preview</div><button class="button project-contact" type="button" data-project-detail="a">View listing</button></div>
-          </div>
-          <div class="project-photo"><img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&amp;fit=crop&amp;w=1600&amp;q=82" alt="Bright contemporary home with spacious living and dining areas" fetchpriority="high"></div>
-        </article>
-        <article class="project-slide" id="projectSlide1" role="tabpanel" aria-label="Sarjapur Road apartment listing">
-          <div class="project-info">
-            <div class="builder-row"><div class="builder-logo" aria-hidden="true">HAVEN<br>REALTY</div><div><div class="builder-name">Haven Realty<br>Bengaluru property agent</div><a class="builder-link" href="#homes">Browse listings</a></div></div>
-            <div class="project-copy"><h2>Room to grow in Sarjapur</h2><div class="project-location">Sarjapur Road, South Bengaluru</div><div class="project-price">₹1.25 Cr – ₹1.72 Cr</div><div class="project-facts">3, 4 BHK apartments</div><div class="project-offer">✦ Agent-curated listing preview</div><button class="button project-contact" type="button" data-project-detail="b">View listing</button></div>
-          </div>
-          <div class="project-photo"><img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&amp;fit=crop&amp;w=1600&amp;q=82" alt="Contemporary residence with generous living space and natural light" loading="lazy"></div>
-        </article>
-        <article class="project-slide" id="projectSlide2" role="tabpanel" aria-label="HSR Layout resale listing">
-          <div class="project-info">
-            <div class="builder-row"><div class="builder-logo" aria-hidden="true">HAVEN<br>REALTY</div><div><div class="builder-name">Haven Realty<br>Bengaluru property agent</div><a class="builder-link" href="#homes">Browse listings</a></div></div>
-            <div class="project-copy"><h2>A home with character</h2><div class="project-location">HSR Layout, South Bengaluru</div><div class="project-price">₹2.2 Cr – ₹2.8 Cr</div><div class="project-facts">3, 4 BHK resale homes</div><div class="project-offer">✦ Agent-curated listing preview</div><button class="button project-contact" type="button" data-project-detail="c">View listing</button></div>
-          </div>
-          <div class="project-photo"><img src="https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&amp;fit=crop&amp;w=1600&amp;q=82" alt="Airy modern family home with a garden-side patio" loading="lazy"></div>
-        </article>
-      </div>
-      <button class="slider-arrow previous" type="button" id="previousSlide" aria-label="Previous featured project"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M19 12H5m7 7-7-7 7-7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-      <button class="slider-arrow next" type="button" id="nextSlide" aria-label="Next featured project"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-7-7 7 7-7 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-      <div class="slider-pagination" aria-label="Choose featured project">
-        <button class="slider-dot" type="button" aria-label="Show project 1" aria-current="true" data-slide="0"></button>
-        <button class="slider-dot" type="button" aria-label="Show project 2" aria-current="false" data-slide="1"></button>
-        <button class="slider-dot" type="button" aria-label="Show project 3" aria-current="false" data-slide="2"></button>
-      </div>
-    </div>
-    <form class="search-box" id="searchForm" role="search">
-      <div class="search-tabs" role="tablist" aria-label="Property type">
-        <button class="search-tab" type="button" role="tab" aria-selected="true" data-kind="Buy">Buy</button>
-        <button class="search-tab" type="button" role="tab" aria-selected="false" data-kind="Resale">Resale</button>
-        <button class="search-tab" type="button" role="tab" aria-selected="false" data-kind="Villas">Villas</button>
-      </div>
-      <div class="search-fields">
-        <div class="field">
-          <label for="locationInput">WHERE</label>
-          <input id="locationInput" type="search" placeholder="Bengaluru or a locality" value="Bengaluru" autocomplete="off">
+    
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="wrap">
+        <div class="hero-header">
+          <span class="hero-tag" id="heroTag">✨ Premium Bengaluru Real Estate Portfolio</span>
+          <h1 id="heroTitle">Find Your Dream Space in the Silicon Valley of India</h1>
+          <p id="heroSubtitle">Verified builder developments, luxury gated communities, and prime resale apartments across Bengaluru's top tech corridors.</p>
         </div>
-        <div class="field">
-          <label for="budgetSelect">BUDGET</label>
-          <select id="budgetSelect" aria-label="Maximum budget">
-            <option value="any">Any budget</option>
-            <option value="60">Up to ₹60 L</option>
-            <option value="90">Up to ₹90 L</option>
-            <option value="120">Up to ₹1.2 Cr</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="bhkSelect">BEDROOMS</label>
-          <select id="bhkSelect" aria-label="Number of bedrooms">
-            <option value="any">Any BHK</option>
-            <option value="1">1 BHK</option>
-            <option value="2">2 BHK</option>
-            <option value="3">3 BHK</option>
-            <option value="4">4+ BHK</option>
-          </select>
-        </div>
-        <button class="button search-submit" type="submit">
-          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8" stroke="currentColor" stroke-width="1.8"/><path d="m16 16 4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-          Search homes
-        </button>
-      </div>
-    </form>
-    <div class="trust-row" aria-label="Why search with Haven">
-      <span class="trust-item"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m12 3 7 3v5c0 4.5-3 7.8-7 10-4-2.2-7-5.5-7-10V6l7-3Z" stroke="currentColor" stroke-width="1.7"/><path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Local agent guidance</span>
-      <span class="trust-item"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v18M17 7H9.5a3 3 0 1 0 0 6h5a3 3 0 1 1 0 6H6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>Upfront pricing</span>
-      <span class="trust-item"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.34-5.66L4 8.68" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M4 4v4.68h4.68M12 7v5l3 2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Here when you need us</span>
-    </div>
-  </section>
 
-  <main id="main" class="wrap">
-    <section aria-labelledby="localTitle">
-      <div class="section-heading">
-        <div><h2 id="localTitle">Find your Bengaluru neighbourhood</h2><p>Explore popular areas across the city.</p></div>
-        <a class="text-link" href="#homes">Explore all areas <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-      </div>
-      <div class="locality-row" aria-label="Popular localities">
-        <button class="locality" type="button" aria-pressed="false">📍 Whitefield</button>
-        <button class="locality" type="button" aria-pressed="false">📍 Sarjapur Road</button>
-        <button class="locality" type="button" aria-pressed="false">📍 Electronic City</button>
-        <button class="locality" type="button" aria-pressed="false">📍 HSR Layout</button>
-        <button class="locality" type="button" aria-pressed="false">📍 Thanisandra</button>
-        <button class="locality" type="button" aria-pressed="false">📍 Yelahanka</button>
-      </div>
-    </section>
-
-    <section id="homes" aria-labelledby="homesTitle">
-      <div class="section-heading">
-        <div><h2 id="homesTitle">Bengaluru homes to explore</h2><p>Local property options for buying, resale, and family living.</p></div>
-        <a class="text-link" href="#homes" id="allHomesLink">See all homes <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-      </div>
-      <div class="results-tools">
-        <div class="results-count" id="resultCount" aria-live="polite"><strong>Sample homes</strong> in Bengaluru</div>
-        <div class="tool-group">
-          <button class="button outline small" id="filterButton" type="button">
-            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 7h16M7 12h10m-7 5h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Filters
-          </button>
-          <div class="view-controls">
-            <div class="view-toggle" aria-label="Results view">
-              <button type="button" id="listViewButton" aria-pressed="true">List</button>
-              <button type="button" id="mapViewButton" aria-pressed="false">Map</button>
+        <!-- Featured Carousel -->
+        <div class="hero-slider-wrap">
+          <div class="slider-viewport" id="sliderViewport">
+            <div class="slider-track" id="sliderTrack">
+              <!-- Dynamically populated from /api/featured-projects -->
             </div>
-            <button class="button outline small" id="sortButton" type="button">Recommended⌄</button>
+            <button class="slider-nav-btn slider-prev" id="sliderPrev" aria-label="Previous Project">‹</button>
+            <button class="slider-nav-btn slider-next" id="sliderNext" aria-label="Next Project">›</button>
+            <div class="slider-indicators" id="sliderIndicators"></div>
           </div>
         </div>
-      </div>
-      <div class="cards" id="propertyGrid" aria-label="Featured properties"></div>
-      <div class="map-panel" id="mapPanel" aria-label="Map of featured homes">
-        <span class="map-label" style="left:22%;top:23%">Whitefield</span>
-        <span class="map-label" style="left:62%;top:18%">Sarjapur Road</span>
-        <span class="map-label" style="left:42%;top:66%">HSR Layout</span>
-        <span class="map-label" style="left:76%;top:73%">Electronic City</span>
-        <button class="map-pin" type="button" style="left:31%;top:48%" data-property="a">₹ 95 L</button>
-        <button class="map-pin" type="button" style="left:60%;top:37%" data-property="b">₹ 1.25 Cr</button>
-        <button class="map-pin" type="button" style="left:47%;top:73%" data-property="c">₹ 2.2 Cr</button>
-        <span class="map-note">Map preview · Tap a price to preview a home</span>
+
+        <!-- Luxury Search Engine Bar -->
+        <div class="search-card">
+          <div class="search-tabs" role="tablist">
+            <button class="tab-pill active" data-kind="Buy">Buy New</button>
+            <button class="tab-pill" data-kind="Resale">Resale</button>
+            <button class="tab-pill" data-kind="Villa">Villas</button>
+            <button class="tab-pill" data-kind="any">All Homes</button>
+          </div>
+
+          <form id="searchForm" class="search-grid">
+            <div class="input-box">
+              <label for="locInput">Location / Locality</label>
+              <input type="text" id="locInput" placeholder="Whitefield, HSR Layout, Sarjapur...">
+            </div>
+            <div class="input-box">
+              <label for="bhkSelect">Bedrooms</label>
+              <select id="bhkSelect">
+                <option value="any">Any BHK</option>
+                <option value="1">1 BHK</option>
+                <option value="2">2 BHK</option>
+                <option value="3">3 BHK</option>
+                <option value="4">4+ BHK</option>
+              </select>
+            </div>
+            <div class="input-box">
+              <label for="budgetSelect">Budget Range</label>
+              <select id="budgetSelect">
+                <option value="any">Any Budget</option>
+                <option value="60">Under ₹60 L</option>
+                <option value="100">Under ₹1 Cr</option>
+                <option value="150">Under ₹1.5 Cr</option>
+                <option value="250">Under ₹2.5 Cr</option>
+                <option value="500">Under ₹5 Cr</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary search-submit-btn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+              Search
+            </button>
+          </form>
+        </div>
+
+        <!-- Live Market Portfolio Highlights (Controlled via Admin) -->
+        <div class="hero-stats-strip" style="display:flex;justify-content:center;gap:36px;margin-top:24px;flex-wrap:wrap;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div style="width:10px;height:10px;border-radius:50%;background:#10b981;box-shadow:0 0 10px #10b981;"></div>
+            <span style="font-size:13.5px;color:rgba(255,255,255,0.85);"><strong id="statActiveListings" style="color:white;font-size:16px;">150+</strong> Active Curated Homes</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div style="width:10px;height:10px;border-radius:50%;background:#38bdf8;box-shadow:0 0 10px #38bdf8;"></div>
+            <span style="font-size:13.5px;color:rgba(255,255,255,0.85);"><strong id="statHubs" style="color:white;font-size:16px;">15+</strong> Prime Bengaluru Hubs</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div style="width:10px;height:10px;border-radius:50%;background:#fbbf24;box-shadow:0 0 10px #fbbf24;"></div>
+            <span style="font-size:13.5px;color:rgba(255,255,255,0.85);"><strong id="statTrust" style="color:white;font-size:16px;">100%</strong> Verified Builder Portfolios</span>
+          </div>
+        </div>
+
       </div>
     </section>
 
-    <section class="trust-band" id="trust" aria-label="Haven trust and experience">
-      <div><strong>Your local Bengaluru property agent.</strong><p>Browse the sample listings or get in touch to talk through your home search.</p></div>
-      <div class="trust-numbers">
-        <div class="trust-number"><b>Local focus</b><span>Bengaluru neighbourhoods</span></div>
-        <div class="trust-number"><b>More choice</b><span>New and resale homes</span></div>
-        <div class="trust-number"><b>Personal service</b><span>Guidance from an agent</span></div>
+    <!-- Main Content Grid -->
+    <main class="wrap" id="propertiesSection" style="padding:32px 0 40px;">
+      
+      <!-- Locality Horizontal Chips -->
+      <div class="localities-strip" id="localityStrip">
+        <button class="locality-chip active" data-locality="">📍 All Localities</button>
+        <button class="locality-chip" data-locality="Whitefield">📍 Whitefield</button>
+        <button class="locality-chip" data-locality="Sarjapur Road">📍 Sarjapur Road</button>
+        <button class="locality-chip" data-locality="HSR Layout">📍 HSR Layout</button>
+        <button class="locality-chip" data-locality="Electronic City">📍 Electronic City</button>
+        <button class="locality-chip" data-locality="Thanisandra">📍 Thanisandra</button>
+        <button class="locality-chip" data-locality="Yelahanka">📍 Yelahanka</button>
       </div>
-    </section>
-    <p class="demo-note">Static website preview · Property details, prices, photos, and Haven Realty branding are sample content and must be replaced with your real listings and contact details.</p>
+
+      <!-- Results Header -->
+      <div class="results-bar">
+        <div id="resultsCounter">Loading properties...</div>
+        <div style="display:flex;gap:10px;align-items:center;">
+          <label style="font-size:12px;font-weight:600;">Sort By:</label>
+          <select id="sortSelect" style="padding:6px 10px;border-radius:8px;border:1px solid var(--border);font-size:12.5px;font-weight:600;background:white;">
+            <option value="recommended">Featured First</option>
+            <option value="price">Price: Low to High</option>
+            <option value="price-desc">Price: High to Low</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Properties Grid -->
+      <div class="property-grid" id="propertyGrid">
+        <!-- Dynamically rendered property cards -->
+      </div>
+
+      <!-- Interactive Mortgage / EMI Calculator Widget -->
+      <section class="calculator-section" id="emiCalculator">
+        <div class="calc-header">
+          <h2>📊 Home Loan EMI Estimator</h2>
+          <p>Plan your purchase with real-time monthly instalment calculations for Indian banks (SBI, HDFC, ICICI).</p>
+        </div>
+        <div class="calc-layout">
+          <div class="calc-controls">
+            <div class="calc-group">
+              <label><span>Loan Amount (₹)</span><strong id="calcLoanLabel">₹ 80,00,000</strong></label>
+              <input type="range" id="loanRange" min="1000000" max="30000000" step="500000" value="8000000">
+            </div>
+            <div class="calc-group">
+              <label><span>Interest Rate (% per annum)</span><strong id="calcRateLabel">8.5%</strong></label>
+              <input type="range" id="rateRange" min="7.0" max="13.0" step="0.1" value="8.5">
+            </div>
+            <div class="calc-group">
+              <label><span>Tenure (Years)</span><strong id="calcTenureLabel">20 Years</strong></label>
+              <input type="range" id="tenureRange" min="5" max="30" step="1" value="20">
+            </div>
+          </div>
+          <div class="calc-result-card">
+            <div class="calc-emi-label">Estimated Monthly EMI</div>
+            <div class="calc-emi-amount" id="calcEmiDisplay">₹ 69,426</div>
+            <div class="calc-breakdown">
+              <div><span>Principal Loan</span><strong id="calcPrincipalDisplay">₹ 80 Lakhs</strong></div>
+              <div><span>Total Interest</span><strong id="calcInterestDisplay">₹ 86.6 Lakhs</strong></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- SINGLE PROPERTY DETAIL VIEW (Activated via hash or click) -->
+  <main class="wrap" id="propertyDetailView">
+    <button class="detail-back-btn" id="backToHomeBtn">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
+      Back to All Properties
+    </button>
+    <div id="propertyDetailContent"></div>
   </main>
 
-  <footer><div class="wrap footer-inner"><span>© 2026 Haven Realty · Bengaluru</span><span>Your local guide to buying and resale homes.</span></div></footer>
-  <div class="mobile-bottom" aria-label="Quick contact actions">
-    <a class="button outline" href="#trust">About us</a>
-    <button class="button" type="button" id="mobileFilterButton">Filter homes</button>
-  </div>
-  </div>
+  <!-- Mobile Bottom Navigation Bar -->
+  <nav class="mobile-bar" aria-label="Mobile Controls">
+    <button class="mobile-tab active" id="mobTabHome">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+      <span>Homes</span>
+    </button>
+    <button class="mobile-tab" id="mobTabSearch">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      <span>Search</span>
+    </button>
+    <button class="mobile-tab" id="mobTabSaved">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+      <span>Saved</span>
+    </button>
+    <a href="https://wa.me/919876543210?text=Hello%20Vasati%20Properties,%20I%20am%20looking%20for%20homes%20in%20Bengaluru" target="_blank" class="mobile-tab" id="mobTabWhatsApp" style="color:#25d366;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1 3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+      <span>WhatsApp</span>
+    </a>
+  </nav>
 
-  <main id="propertyPage" class="wrap property-page" hidden aria-live="polite"></main>
-
-  <dialog id="filterDialog" aria-labelledby="filterTitle">
-    <div class="dialog-head"><h2 id="filterTitle">Refine your search</h2><button class="close-btn" type="button" data-close aria-label="Close filters">×</button></div>
-    <div class="filter-content">
-      <div class="filter-section"><h3>Bedrooms</h3><div class="chip-options" id="filterBedrooms">
-        <button class="filter-chip" type="button" data-bhk="1" aria-pressed="false">1 BHK</button><button class="filter-chip" type="button" data-bhk="2" aria-pressed="false">2 BHK</button><button class="filter-chip" type="button" data-bhk="3" aria-pressed="false">3 BHK</button><button class="filter-chip" type="button" data-bhk="4" aria-pressed="false">4+ BHK</button>
-      </div></div>
-      <div class="filter-section"><h3>Property type</h3><div class="chip-options" id="filterKinds">
-        <button class="filter-chip" type="button" data-status="New" aria-pressed="false">New homes</button><button class="filter-chip" type="button" data-status="Resale" aria-pressed="false">Resale</button><button class="filter-chip" type="button" data-status="Villa" aria-pressed="false">Villas</button>
-      </div></div>
-      <div class="filter-section"><h3>Price range</h3><div class="range-row">
-        <label>Minimum<select id="minPrice"><option value="0">No minimum</option><option value="50">₹50 L</option><option value="75">₹75 L</option><option value="100">₹1 Cr</option></select></label>
-        <label>Maximum<select id="maxPrice"><option value="500">Any price</option><option value="60">₹60 L</option><option value="90">₹90 L</option><option value="120">₹1.2 Cr</option><option value="200">₹2 Cr</option></select></label>
-      </div></div>
-      <div class="filter-actions"><button class="button outline" type="button" id="clearFilters">Clear all</button><button class="button" type="button" id="applyFilters">Show homes</button></div>
+  <!-- Footer -->
+  <footer>
+    <div class="wrap footer-inner">
+      <div style="display:flex;align-items:center;gap:14px;">
+        <img src="/images/logo.png" alt="Vasati Properties" style="height:48px;width:48px;object-fit:contain;border-radius:8px;">
+        <div>
+          <strong style="font-size:16px;letter-spacing:1px;color:#0b192c;">VASATI PROPERTIES</strong>
+          <div style="font-size:12px;color:var(--ink-muted);margin-top:2px;">Bengaluru Luxury Real Estate Portfolio · Powered by Node.js</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+        <span id="footerPhoneDisplay" style="color:var(--ink-muted);font-size:13px;font-weight:600;">📞 +91 98765 43210</span>
+        <span>·</span>
+        <a href="#emiCalculator">Home Loan Calculator</a>
+        <span>·</span>
+        <a href="https://wa.me/919876543210" target="_blank" id="footerWhatsAppLink" style="color:#059669;font-weight:700;">Direct WhatsApp Agent</a>
+      </div>
     </div>
-  </dialog>
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </footer>
 
+  <!-- Notification Toast -->
+  <div class="toast-box" id="toastBox"></div>
+
+  <!-- APPLICATION CLIENT JAVASCRIPT -->
   <script>
-    const properties = [
-      { id:"a", title:"Modern living in Whitefield", location:"Whitefield, East Bengaluru", price:95, priceLabel:"₹95 L", bhk:2, area:"1,240 sqft", baths:2, status:"New", image:"https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1000&q=78", alt:"Bright contemporary home with spacious living and dining areas", listed:"Agent listing · Sample details", kind:"Apartment", possession:"Ready to move", description:"A bright, thoughtfully laid-out sample home in Whitefield. Replace this copy with verified property details, inclusions, and current availability." },
-      { id:"b", title:"Room to grow in Sarjapur", location:"Sarjapur Road, South Bengaluru", price:125, priceLabel:"₹1.25 Cr", bhk:3, area:"1,685 sqft", baths:3, status:"New", image:"https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1000&q=78", alt:"Contemporary residence with generous living space and natural light", listed:"Agent listing · Sample details", kind:"Apartment", possession:"Under construction", description:"A spacious sample apartment listing on Sarjapur Road. Confirm the developer, approvals, possession schedule, and final price before publishing real listing information." },
-      { id:"c", title:"A home with character", location:"HSR Layout, South Bengaluru", price:220, priceLabel:"₹2.2 Cr", bhk:3, area:"2,140 sqft", baths:3, status:"Resale", image:"https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=1000&q=78", alt:"Airy modern family home with a garden-side patio", listed:"Resale · Sample details", kind:"Villa", possession:"Ready to move", description:"A sample resale family home in HSR Layout. Replace with confirmed ownership, age, title, and property-condition information." },
-      { id:"d", title:"A brighter start in Electronic City", location:"Electronic City, South Bengaluru", price:68, priceLabel:"₹68 L", bhk:2, area:"1,090 sqft", baths:2, status:"New", image:"https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1000&q=78", alt:"Sunlit apartment interior with a calm neutral palette", listed:"Agent listing · Sample details", kind:"Apartment", possession:"Ready to move", description:"A welcoming sample apartment near Electronic City. Replace the sample information with verified specifications and available viewing times." },
-      { id:"e", title:"A cosy home in Thanisandra", location:"Thanisandra, North Bengaluru", price:52, priceLabel:"₹52 L", bhk:1, area:"710 sqft", baths:1, status:"Resale", image:"https://images.unsplash.com/photo-1600607687644-c7171b42498f?auto=format&fit=crop&w=1000&q=78", alt:"Compact modern home with an inviting living room", listed:"Resale · Sample details", kind:"Apartment", possession:"Ready to move", description:"A compact sample resale home in Thanisandra. Confirm the sale terms and property documents with the owner before advertising." },
-      { id:"f", title:"The Yelahanka family villa", location:"Yelahanka, North Bengaluru", price:245, priceLabel:"₹2.45 Cr", bhk:4, area:"3,050 sqft", baths:4, status:"Villa", image:"https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1000&q=78", alt:"Contemporary villa with clean architecture and landscaped greenery", listed:"Agent listing · Sample details", kind:"Villa", possession:"Ready to move", description:"A sample family villa in Yelahanka. Replace with accurate plot, built-up area, approvals, and amenities before launch." }
-    ];
-    const state = { kind:"Buy", bhk:"any", budget:"any", min:0, max:500, status:"any", locality:"", saved:new Set(), savedOnly:false, sort:"recommended" };
-    const grid = document.getElementById("propertyGrid");
-    const filterDialog = document.getElementById("filterDialog");
-    const propertyPage = document.getElementById("propertyPage");
-    const homeSurface = document.getElementById("homeSurface");
-    const defaultTitle = document.title;
-    const toast = document.getElementById("toast");
-    let toastTimer;
-    const checkIcon = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m5 12 4 4L19 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-    const pinIcon = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="10" r="2.5" stroke="currentColor" stroke-width="1.7"/></svg>';
-    const bedIcon = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 18v-7h18v7M3 14h18M6 11V7h5v4m2 0V9h5v2M4 18v2m16-2v2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-    const areaIcon = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 9V4h5M4 4l6 6m10 5v5h-5m5 0-6-6M9 20H4v-5m0 5 6-6m5-11h5v5m0-5-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-    const bathIcon = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12h16v2a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5v-2Zm0 0V7a3 3 0 0 1 5.8-1.1M7 19v2m10-2v2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    const state = {
+      kind: "any",
+      locality: "",
+      bhk: "any",
+      budget: "any",
+      sort: "recommended",
+      saved: new Set(JSON.parse(localStorage.getItem('vasati_saved') || '[]')),
+      showingSavedOnly: false
+    };
 
-    function showToast(message) {
-      toast.textContent = message;
-      toast.classList.add("show");
-      clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => toast.classList.remove("show"), 2300);
+    let allProperties = [];
+    let featuredProjects = [];
+    let currentSlide = 0;
+    let slideTimer;
+    let siteSettings = {};
+
+    function formatEmbedUrl(url) {
+      if (!url) return '';
+      if (url.includes('youtube.com/watch?v=')) {
+        const v = url.split('v=')[1]?.split('&')[0];
+        return `https://www.youtube.com/embed/${v}`;
+      }
+      if (url.includes('youtu.be/')) {
+        const v = url.split('youtu.be/')[1]?.split('?')[0];
+        return `https://www.youtube.com/embed/${v}`;
+      }
+      return url;
     }
-    const projectSlides = [...document.querySelectorAll(".project-slide")];
-    const sliderTrack = document.getElementById("sliderTrack");
-    const sliderViewport = document.getElementById("projectSlider");
-    let activeSlide = 0;
-    function setProjectSlide(index) {
-      activeSlide = (index + projectSlides.length) % projectSlides.length;
-      const slideWidth = projectSlides[0].getBoundingClientRect().width;
-      const gap = parseFloat(getComputedStyle(sliderTrack).columnGap) || 0;
-      const offset = (sliderViewport.clientWidth - slideWidth) / 2 - activeSlide * (slideWidth + gap);
-      sliderTrack.style.transform = `translate3d(${offset}px, 0, 0)`;
-      projectSlides.forEach((slide, slideIndex) => {
-        const isActive = slideIndex === activeSlide;
-        slide.setAttribute("aria-hidden", String(!isActive));
-        slide.inert = !isActive;
-      });
-      document.querySelectorAll(".project-tab, .slider-dot").forEach(button => {
-        const isActive = Number(button.dataset.slide) === activeSlide;
-        if (button.classList.contains("project-tab")) button.setAttribute("aria-selected", String(isActive));
-        else button.setAttribute("aria-current", String(isActive));
-      });
+
+    const toastBox = document.getElementById('toastBox');
+    let toastTimeout;
+
+    function showToast(msg) {
+      toastBox.innerHTML = msg;
+      toastBox.classList.add('show');
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => toastBox.classList.remove('show'), 3200);
     }
-    document.querySelectorAll("[data-slide]").forEach(button => button.addEventListener("click", () => setProjectSlide(Number(button.dataset.slide))));
-    document.getElementById("previousSlide").addEventListener("click", () => setProjectSlide(activeSlide - 1));
-    document.getElementById("nextSlide").addEventListener("click", () => setProjectSlide(activeSlide + 1));
-    sliderViewport.addEventListener("keydown", event => {
-      if (event.key === "ArrowLeft") { event.preventDefault(); setProjectSlide(activeSlide - 1); }
-      if (event.key === "ArrowRight") { event.preventDefault(); setProjectSlide(activeSlide + 1); }
-    });
-    let touchStartX = null;
-    sliderViewport.addEventListener("pointerdown", event => {
-      touchStartX = event.pointerType === "touch" ? event.clientX : null;
-    });
-    sliderViewport.addEventListener("pointerup", event => {
-      if (touchStartX === null) return;
-      const delta = event.clientX - touchStartX;
-      if (Math.abs(delta) > 48) setProjectSlide(activeSlide + (delta < 0 ? 1 : -1));
-      touchStartX = null;
-    });
-    sliderViewport.addEventListener("pointercancel", () => { touchStartX = null; });
-    window.addEventListener("resize", () => setProjectSlide(activeSlide));
-    document.querySelectorAll("[data-project-detail]").forEach(button => button.addEventListener("click", () => openDetail(button.dataset.projectDetail)));
-    function matches(property) {
-      const kindMatch = state.kind === "Buy" || (state.kind === "Resale" ? property.status === "Resale" : property.kind === "Villa" || property.status === "Villa");
-      const localityMatch = !state.locality || property.location.toLowerCase().includes(state.locality.toLowerCase());
-      const bhkMatch = state.bhk === "any" || property.bhk === Number(state.bhk) || (state.bhk === "4" && property.bhk >= 4);
-      const budget = state.budget === "any" || property.price <= Number(state.budget);
-      const priceMatch = property.price >= Number(state.min) && property.price <= Number(state.max);
-      const statusMatch = state.status === "any" || (state.status === "Villa" ? property.kind === "Villa" : property.status === state.status);
-      return kindMatch && localityMatch && bhkMatch && budget && priceMatch && statusMatch && (!state.savedOnly || state.saved.has(property.id));
+
+    function updateFavCounter() {
+      document.getElementById('favCount').textContent = state.saved.size;
+      localStorage.setItem('vasati_saved', JSON.stringify([...state.saved]));
     }
-    function render() {
-      const results = properties.filter(matches);
-      if (state.sort === "price") results.sort((a,b) => a.price-b.price);
-      if (state.sort === "price-desc") results.sort((a,b) => b.price-a.price);
-      const homeCount = results.length === 1 ? "1 sample home" : `${results.length} sample homes`;
-      document.getElementById("resultCount").innerHTML = `<strong>${homeCount}</strong> in ${escapeHtml(state.locality || document.getElementById("locationInput").value || "Bengaluru")}`;
-      grid.innerHTML = results.length ? results.map(property => `
-        <article class="property-card" data-property-id="${property.id}" tabindex="0" role="link" aria-label="View details for ${escapeHtml(property.title)}">
-          <div class="photo-wrap">
-            <img src="${property.image}" alt="${property.alt}" loading="lazy" width="1000" height="750">
-            <span class="badge">${checkIcon}${property.status === "Resale" ? "Resale listing" : property.status === "Villa" ? "Villa listing" : "Agent listing"}</span>
-            <button class="heart" type="button" aria-label="${state.saved.has(property.id) ? "Remove saved home" : "Save home"}: ${escapeHtml(property.title)}" aria-pressed="${state.saved.has(property.id)}" data-save="${property.id}">
-              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.8 8.8c0 5.2-8.8 10.2-8.8 10.2S3.2 14 3.2 8.8a4.4 4.4 0 0 1 8.8-1.1 4.4 4.4 0 0 1 8.8 1.1Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
-            </button>
+
+    // --- Dynamic Settings Ingestion (Admin Controlled) ---
+    async function loadSiteSettings() {
+      try {
+        const res = await fetch('/api/settings');
+        const data = await res.json();
+        if (data.success && data.data) {
+          siteSettings = data.data;
+
+          if (siteSettings.hero_tag && document.getElementById('heroTag')) {
+            document.getElementById('heroTag').textContent = siteSettings.hero_tag;
+          }
+          if (siteSettings.hero_title && document.getElementById('heroTitle')) {
+            document.getElementById('heroTitle').textContent = siteSettings.hero_title;
+          }
+          if (siteSettings.hero_subtitle && document.getElementById('heroSubtitle')) {
+            document.getElementById('heroSubtitle').textContent = siteSettings.hero_subtitle;
+          }
+          if (siteSettings.stat_active_listings && document.getElementById('statActiveListings')) {
+            document.getElementById('statActiveListings').textContent = siteSettings.stat_active_listings;
+          }
+          if (siteSettings.stat_hubs && document.getElementById('statHubs')) {
+            document.getElementById('statHubs').textContent = siteSettings.stat_hubs;
+          }
+          if (siteSettings.stat_trust && document.getElementById('statTrust')) {
+            document.getElementById('statTrust').textContent = siteSettings.stat_trust;
+          }
+          if (siteSettings.contact_phone && document.getElementById('footerPhoneDisplay')) {
+            document.getElementById('footerPhoneDisplay').textContent = `📞 ${siteSettings.contact_phone}`;
+          }
+          if (siteSettings.whatsapp_number) {
+            const num = siteSettings.whatsapp_number.replace(/[^0-9]/g, '');
+            const mobWa = document.getElementById('mobTabWhatsApp');
+            if (mobWa) mobWa.href = `https://wa.me/${num}?text=Hello%20Vasati%20Properties,%20I%20am%20looking%20for%20homes%20in%20Bengaluru`;
+            const footWa = document.getElementById('footerWhatsAppLink');
+            if (footWa) footWa.href = `https://wa.me/${num}`;
+          }
+        }
+      } catch (err) {
+        console.error('Error loading site settings:', err);
+      }
+    }
+
+    // --- Dynamic API Ingestion ---
+    async function loadProperties() {
+      try {
+        const grid = document.getElementById('propertyGrid');
+        grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:50px;color:var(--ink-muted);">Loading verified properties...</div>';
+
+        const params = new URLSearchParams();
+        if (state.kind !== 'any') params.set('status', state.kind);
+        if (state.locality) params.set('locality', state.locality);
+        if (state.bhk !== 'any') params.set('bhk', state.bhk);
+        if (state.budget !== 'any') params.set('budget', state.budget);
+        if (state.sort) params.set('sort', state.sort);
+
+        const res = await fetch(`/api/properties?${params.toString()}`);
+        const data = await res.json();
+        if (data.success) {
+          allProperties = data.data;
+          renderProperties();
+        }
+      } catch (err) {
+        showToast('❌ Unable to connect to backend server');
+      }
+    }
+
+    async function loadFeaturedProjects() {
+      try {
+        const res = await fetch('/api/featured-projects');
+        const data = await res.json();
+        if (data.success && data.data.length) {
+          featuredProjects = data.data;
+          renderSlider();
+        }
+      } catch (err) {
+        console.error('Error loading projects:', err);
+      }
+    }
+
+    // --- Slider Render & Animation ---
+    function renderSlider() {
+      const track = document.getElementById('sliderTrack');
+      const indicators = document.getElementById('sliderIndicators');
+      const waNum = (siteSettings.whatsapp_number || '919876543210').replace(/[^0-9]/g, '');
+
+      track.innerHTML = featuredProjects.map(p => `
+        <div class="slide-item">
+          <div class="slide-info">
+            <span class="slide-partner">🏢 ${p.builder_name} · Premier Developer</span>
+            <h2 class="slide-title">${p.name}</h2>
+            <div class="slide-location">📍 ${p.location}</div>
+            <div class="slide-specs">${p.bhk_types}</div>
+            <div class="slide-price">${p.price_range}</div>
+            <div class="slide-offer">✦ ${p.offer_text}</div>
+            <div style="margin-top:20px;display:flex;gap:10px;flex-wrap:wrap;">
+              <a href="#propertiesSection" class="btn btn-primary btn-sm">Explore Homes</a>
+              <a href="https://wa.me/${waNum}?text=Hi,%20I%20am%20interested%20in%20${encodeURIComponent(p.name)}" target="_blank" class="btn btn-whatsapp btn-sm">Chat on WhatsApp</a>
+              ${p.video_url ? `<a href="${p.video_url}" target="_blank" class="btn btn-outline btn-sm" style="background:rgba(255,255,255,0.15);color:white;border-color:rgba(255,255,255,0.3);backdrop-filter:blur(4px);">▶ Video Tour</a>` : ''}
+            </div>
           </div>
-          <div class="card-body">
-            <div class="price-row"><span class="price">${property.priceLabel}</span><span class="price-note">₹${Math.round(property.price*100000/Number(property.area.split(" ")[0].replaceAll(",",""))).toLocaleString("en-IN")}/sqft</span></div>
-            <h3 class="property-title">${escapeHtml(property.title)}</h3>
-            <div class="location">${pinIcon}${escapeHtml(property.location)}</div>
-            <div class="facts"><span>${bedIcon}${property.bhk} BHK</span><span>${areaIcon}${property.area}</span><span>${bathIcon}${property.baths} bath</span></div>
-            <div class="card-foot"><span class="listed">${escapeHtml(property.listed)}</span><button class="view-link" type="button" data-detail="${property.id}">View home →</button></div>
+          <div class="slide-img-box">
+            <img src="${p.image}" alt="${p.name}">
           </div>
-        </article>`).join("") : '<div class="empty-state"><strong>No homes match those filters just yet.</strong>Try widening your budget or choosing a different area.</div>';
-      document.getElementById("favCount").textContent = state.saved.size;
-      document.getElementById("homesTitle").textContent = state.savedOnly ? "Your saved homes" : state.kind === "Resale" ? "Bengaluru resale homes" : state.kind === "Villas" ? "Bengaluru villas" : "Bengaluru homes to explore";
-      document.getElementById("allHomesLink").textContent = state.savedOnly ? "Back to all homes" : "See all homes";
-      document.getElementById("allHomesLink").setAttribute("aria-label", state.savedOnly ? "Show all homes" : "See all homes");
-      document.getElementById("mapViewButton").disabled = results.length === 0;
-    }
-    function renderPropertyPage(property) {
-      const gallery = [property.image, ...properties.filter(item => item.id !== property.id).map(item => item.image)].slice(0, 3);
-      const pricePerSqft = Math.round(property.price * 100000 / Number(property.area.split(" ")[0].replaceAll(",", ""))).toLocaleString("en-IN");
-      const related = properties.filter(item => item.id !== property.id).slice(0, 3);
-      propertyPage.innerHTML = `
-        <a class="back-link" href="#homes"><span aria-hidden="true">←</span> Back to Bengaluru homes</a>
-        <div class="detail-breadcrumb"><a href="#homes">Buy in Bengaluru</a> / ${escapeHtml(property.location.split(",")[0])} / ${escapeHtml(property.title)}</div>
-        <div class="detail-gallery" aria-label="Photos of ${escapeHtml(property.title)}">
-          ${gallery.map((image, index) => `<img src="${image}" alt="${index === 0 ? escapeHtml(property.alt) : `Additional view ${index + 1} of ${escapeHtml(property.title)}`}" ${index === 0 ? 'fetchpriority="high"' : 'loading="lazy"'}>`).join("")}
         </div>
-        <div class="detail-top">
-          <div class="detail-heading">
-            <h1>${escapeHtml(property.title)}</h1>
-            <div class="detail-address">${pinIcon}${escapeHtml(property.location)} · ${escapeHtml(property.kind)} · ${property.status === "Resale" ? "Resale" : "For sale"}</div>
+      `).join('');
+
+      indicators.innerHTML = featuredProjects.map((_, i) => `
+        <button class="indicator-dot ${i === 0 ? 'active' : ''}" onclick="goToSlide(${i})"></button>
+      `).join('');
+
+      startSlideAutoPlay();
+    }
+
+    function goToSlide(index) {
+      currentSlide = (index + featuredProjects.length) % featuredProjects.length;
+      document.getElementById('sliderTrack').style.transform = `translateX(-${currentSlide * 100}%)`;
+      document.querySelectorAll('.indicator-dot').forEach((dot, i) => {
+        dot.classList.toggle('active', i === currentSlide);
+      });
+    }
+
+    function startSlideAutoPlay() {
+      clearInterval(slideTimer);
+      slideTimer = setInterval(() => goToSlide(currentSlide + 1), 6000);
+    }
+
+    document.getElementById('sliderPrev').addEventListener('click', () => {
+      goToSlide(currentSlide - 1);
+      startSlideAutoPlay();
+    });
+    document.getElementById('sliderNext').addEventListener('click', () => {
+      goToSlide(currentSlide + 1);
+      startSlideAutoPlay();
+    });
+
+    // --- Render Property Cards ---
+    function renderProperties() {
+      const grid = document.getElementById('propertyGrid');
+      let list = [...allProperties];
+
+      if (state.showingSavedOnly) {
+        list = list.filter(p => state.saved.has(p.id));
+      }
+
+      const countText = list.length === 1 ? '1 luxury home' : `${list.length} luxury homes`;
+      const locationText = state.locality ? `in ${state.locality}` : 'across Bengaluru';
+      document.getElementById('resultsCounter').innerHTML = `Showing <strong>${countText}</strong> ${locationText}`;
+
+      if (!list.length) {
+        grid.innerHTML = `
+          <div style="grid-column:1/-1;text-align:center;padding:60px 20px;background:white;border-radius:14px;border:1px dashed var(--border);">
+            <div style="font-size:32px;margin-bottom:10px;">🏠</div>
+            <h3 style="font-size:18px;font-weight:700;">No properties match your current search</h3>
+            <p style="color:var(--ink-muted);font-size:14px;margin-top:6px;">Try adjusting your budget, BHK filter, or area selection.</p>
+            <button class="btn btn-outline btn-sm" style="margin-top:16px;" onclick="resetAllFilters()">Reset Filters</button>
           </div>
-          <div class="detail-price-block"><div class="detail-price">${property.priceLabel}</div><div class="detail-price-note">Approx. ₹${pricePerSqft}/sqft · Indicative listing price</div></div>
-        </div>
-        <div class="property-layout">
-          <div class="property-sections">
-            <section class="detail-card" aria-labelledby="overviewTitle">
-              <h2 id="overviewTitle">Property overview</h2>
-              <div class="spec-grid">
-                <div class="spec-item"><strong>${property.bhk} BHK</strong><span>Bedrooms</span></div>
-                <div class="spec-item"><strong>${property.area}</strong><span>Built-up area</span></div>
-                <div class="spec-item"><strong>${property.baths}</strong><span>Bathrooms</span></div>
-                <div class="spec-item"><strong>${escapeHtml(property.possession)}</strong><span>Possession</span></div>
+        `;
+        return;
+      }
+
+      const waNum = (siteSettings.whatsapp_number || '919876543210').replace(/[^0-9]/g, '');
+
+      grid.innerHTML = list.map(p => {
+        const isSaved = state.saved.has(p.id);
+        const areaNum = Number(p.area.split(' ')[0].replaceAll(',', '')) || 1200;
+        const pricePerSqft = Math.round((p.price * 100000) / areaNum);
+        
+        // Indicative monthly EMI estimate at 8.5% for 20 years (approx ₹867 per Lakh)
+        const approxEmi = Math.round(p.price * 867.8);
+
+        return `
+          <article class="property-card" onclick="openDetail('${p.id}')">
+            <div class="card-photo-wrap">
+              <img src="${p.image}" alt="${p.title}" loading="lazy">
+              <span class="card-status-badge">
+                ${p.status === 'New' ? '✨ New Launch' : p.status === 'Villa' ? '👑 Luxury Villa' : '🔑 Resale Ready'}
+              </span>
+              ${p.video_url ? `<span style="position:absolute;top:12px;left:12px;background:rgba(15,23,42,0.85);color:#38bdf8;padding:4px 9px;border-radius:20px;font-size:11px;font-weight:700;display:flex;align-items:center;gap:4px;backdrop-filter:blur(4px);z-index:2;">▶ Video Tour</span>` : ''}
+              <button class="card-heart-btn ${isSaved ? 'saved' : ''}" onclick="toggleSave(event, '${p.id}')" title="Save home">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+              </button>
+            </div>
+            <div class="card-body">
+              <div class="card-price-row">
+                <div class="card-price">${p.priceLabel}</div>
+                <div class="card-price-sqft">₹${pricePerSqft.toLocaleString('en-IN')}/sqft</div>
               </div>
-            </section>
-            <section class="detail-card" aria-labelledby="aboutPropertyTitle">
-              <h2 id="aboutPropertyTitle">About this property</h2>
-              <p class="detail-copy">${escapeHtml(property.description)}</p>
-              <p class="detail-copy"><strong>Listing type:</strong> ${property.status === "Resale" ? "Resale" : property.status === "Villa" ? "Villa" : "New home"} &nbsp;·&nbsp; <strong>Listing details:</strong> ${escapeHtml(property.listed)}</p>
-            </section>
-            <section class="detail-card" aria-labelledby="amenitiesTitle">
-              <h2 id="amenitiesTitle">What to explore</h2>
-              <ul class="amenities"><li>Natural-light living spaces</li><li>Practical floor plan</li><li>Nearby daily essentials</li><li>Local agent guidance</li><li>In-person viewing options</li><li>Price details on enquiry</li></ul>
-            </section>
-            <section class="detail-card" aria-labelledby="locationTitle">
-              <h2 id="locationTitle">Location</h2>
-              <div class="location-preview" role="img" aria-label="Illustrative map preview for ${escapeHtml(property.location)}"><span>${escapeHtml(property.location)}</span></div>
-              <p class="detail-copy">${escapeHtml(property.location)}. This map is an illustrative placeholder; confirm the exact address and travel distances with the agent.</p>
-            </section>
+              <h3 class="card-title">${p.title}</h3>
+              <div class="card-loc">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                ${p.location}
+              </div>
+              <div class="card-specs-bar">
+                <div class="spec-unit"><span>Bedrooms</span><strong>${p.bhk} BHK</strong></div>
+                <div class="spec-unit"><span>Super Area</span><strong>${p.area}</strong></div>
+                <div class="spec-unit"><span>Est. EMI</span><strong>₹${(approxEmi/1000).toFixed(1)}k/mo</strong></div>
+              </div>
+              <div class="card-footer">
+                <button class="btn btn-primary" onclick="openDetail('${p.id}'); event.stopPropagation();">View Details</button>
+                <a href="https://wa.me/${waNum}?text=Hi,%20I%20am%20interested%20in%20${encodeURIComponent(p.title)}%20(${p.priceLabel})" target="_blank" onclick="event.stopPropagation();" class="btn btn-whatsapp btn-sm" title="Chat on WhatsApp">
+                  💬 WhatsApp
+                </a>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+
+    function toggleSave(e, id) {
+      e.stopPropagation();
+      if (state.saved.has(id)) {
+        state.saved.delete(id);
+        showToast('Property removed from favorites');
+      } else {
+        state.saved.add(id);
+        showToast('❤️ Property saved to your favorites');
+      }
+      updateFavCounter();
+      renderProperties();
+    }
+
+    function resetAllFilters() {
+      state.kind = "any";
+      state.locality = "";
+      state.bhk = "any";
+      state.budget = "any";
+      state.showingSavedOnly = false;
+      document.getElementById('locInput').value = "";
+      document.getElementById('bhkSelect').value = "any";
+      document.getElementById('budgetSelect').value = "any";
+      document.querySelectorAll('.tab-pill').forEach(t => t.classList.toggle('active', t.dataset.kind === 'any'));
+      document.querySelectorAll('.locality-chip').forEach(c => c.classList.toggle('active', c.dataset.locality === ''));
+      loadProperties();
+    }
+
+    // --- Search & Locality Events ---
+    document.querySelectorAll('.tab-pill').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-pill').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        state.kind = btn.dataset.kind;
+        state.showingSavedOnly = false;
+        loadProperties();
+      });
+    });
+
+    document.querySelectorAll('.locality-chip').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.locality-chip').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        state.locality = btn.dataset.locality;
+        state.showingSavedOnly = false;
+        loadProperties();
+      });
+    });
+
+    document.getElementById('searchForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      state.locality = document.getElementById('locInput').value.trim();
+      state.bhk = document.getElementById('bhkSelect').value;
+      state.budget = document.getElementById('budgetSelect').value;
+      state.showingSavedOnly = false;
+      loadProperties();
+      document.getElementById('propertiesSection').scrollIntoView({ behavior: 'smooth' });
+    });
+
+    document.getElementById('sortSelect').addEventListener('change', (e) => {
+      state.sort = e.target.value;
+      loadProperties();
+    });
+
+    document.getElementById('favTrigger').addEventListener('click', () => {
+      state.showingSavedOnly = !state.showingSavedOnly;
+      renderProperties();
+      if (state.showingSavedOnly && !state.saved.size) {
+        showToast('Tap the heart icon on any home to save it!');
+      }
+    });
+
+    // --- Single Property Detail Routing & View ---
+    async function openDetail(id) {
+      location.hash = `#property/${id}`;
+    }
+
+    async function renderPropertyDetail(id) {
+      let p = allProperties.find(item => item.id === id);
+      if (!p) {
+        try {
+          const res = await fetch(`/api/properties/${id}`);
+          const data = await res.json();
+          if (data.success) p = data.data;
+        } catch(e) {}
+      }
+
+      if (!p) {
+        showToast('Property not found');
+        location.hash = "";
+        return;
+      }
+
+      document.getElementById('homeSurface').style.display = 'none';
+      const detailView = document.getElementById('propertyDetailView');
+      detailView.classList.add('active');
+
+      const areaNum = Number(p.area.split(' ')[0].replaceAll(',', '')) || 1200;
+      const pricePerSqft = Math.round((p.price * 100000) / areaNum);
+      const estEmi = Math.round(p.price * 867.8);
+
+      document.getElementById('propertyDetailContent').innerHTML = `
+        <div class="detail-gallery-grid">
+          <img src="${p.image}" class="gallery-main" alt="${p.title}">
+          <div class="gallery-thumbs">
+            <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=75" alt="Living Room">
+            <img src="https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=800&q=75" alt="Interior">
           </div>
-          <aside class="agent-card" aria-labelledby="agentTitle">
-            <h2 id="agentTitle">Interested in this home?</h2>
-            <p class="agent-tag">Talk with your Bengaluru property agent.</p>
-            <div class="detail-spec"><b>${property.priceLabel}</b><span>Indicative asking price</span></div>
-            <div class="detail-spec" style="margin-top:9px"><b>${property.bhk} BHK · ${property.area}</b><span>${escapeHtml(property.location)}</span></div>
-            <form class="agent-form" id="enquiryForm">
-              <label for="enquiryName">Your name<input id="enquiryName" name="name" autocomplete="name" placeholder="Enter your name" required></label>
-              <label for="enquiryPhone">Phone number<input id="enquiryPhone" name="phone" type="tel" inputmode="tel" autocomplete="tel" minlength="10" maxlength="16" placeholder="Enter your phone number" required></label>
-              <button class="button" type="submit">Request a viewing</button>
+        </div>
+
+        <div class="detail-layout">
+          <div>
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:16px;">
+              <div>
+                <span class="card-status-badge" style="position:static;margin-bottom:8px;">${p.status} · Verified</span>
+                <h1 style="font-size:32px;font-weight:800;letter-spacing:-0.8px;">${p.title}</h1>
+                <div style="display:flex;align-items:center;gap:6px;color:var(--ink-muted);font-size:14px;margin-top:6px;">
+                  📍 ${p.location} · ${p.kind || 'Apartment'} · ${p.possession || 'Ready to Move'}
+                </div>
+              </div>
+              <div style="text-align:right;">
+                <div style="font-size:34px;font-weight:800;color:var(--primary);">${p.priceLabel}</div>
+                <div style="font-size:13px;color:var(--ink-muted);font-weight:600;">≈ ₹${pricePerSqft.toLocaleString('en-IN')}/sqft</div>
+              </div>
+            </div>
+
+            <!-- Overview Specs Card -->
+            <div class="detail-card">
+              <h3>Property Overview</h3>
+              <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(130px, 1fr));gap:16px;text-align:center;">
+                <div style="background:#f8fafc;padding:14px;border-radius:10px;">
+                  <span style="font-size:12px;color:var(--ink-light);display:block;">Bedrooms</span>
+                  <strong style="font-size:16px;">${p.bhk} BHK</strong>
+                </div>
+                <div style="background:#f8fafc;padding:14px;border-radius:10px;">
+                  <span style="font-size:12px;color:var(--ink-light);display:block;">Super Built-up</span>
+                  <strong style="font-size:16px;">${p.area}</strong>
+                </div>
+                <div style="background:#f8fafc;padding:14px;border-radius:10px;">
+                  <span style="font-size:12px;color:var(--ink-light);display:block;">Bathrooms</span>
+                  <strong style="font-size:16px;">${p.baths || 2} Baths</strong>
+                </div>
+                <div style="background:#f8fafc;padding:14px;border-radius:10px;">
+                  <span style="font-size:12px;color:var(--ink-light);display:block;">Possession</span>
+                  <strong style="font-size:16px;">${p.possession || 'Ready'}</strong>
+                </div>
+              </div>
+            </div>
+
+            <!-- Description -->
+            <div class="detail-card">
+              <h3>About this Property</h3>
+              <p style="font-size:14.5px;color:#334155;line-height:1.7;">${p.description || 'Stunning architectural residence situated in one of Bengaluru’s most coveted tech enclaves. Features expansive natural light, world-class specifications, and landscaped community spaces.'}</p>
+            </div>
+
+            ${p.video_url ? `
+            <!-- Video Walkthrough Tour -->
+            <div class="detail-card">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
+                <h3 style="margin:0;">🎥 Property Video Walkthrough Tour</h3>
+                <a href="${p.video_url}" target="_blank" style="font-size:12.5px;color:var(--primary);font-weight:700;text-decoration:none;">Open Video Link ↗</a>
+              </div>
+              <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:12px;background:#000;box-shadow:var(--shadow-sm);">
+                <iframe src="${formatEmbedUrl(p.video_url)}" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+              </div>
+            </div>
+            ` : ''}
+
+            <!-- Amenities -->
+            <div class="detail-card">
+              <h3>Community Amenities & Features</h3>
+              <div class="amenities-grid">
+                <div class="amenity-item"><div class="amenity-icon">🏊</div> Temperature Controlled Pool</div>
+                <div class="amenity-item"><div class="amenity-icon">🏋️</div> High-Tech Gymnasium</div>
+                <div class="amenity-item"><div class="amenity-icon">🌳</div> 3 Acres Landscaped Gardens</div>
+                <div class="amenity-item"><div class="amenity-icon">🛡️</div> 24/7 Gated Multi-tier Security</div>
+                <div class="amenity-item"><div class="amenity-icon">⚡</div> 100% Power Backup</div>
+                <div class="amenity-item"><div class="amenity-icon">🚗</div> Dedicated Covered Parking</div>
+              </div>
+            </div>
+
+            <!-- Locality Highlights -->
+            <div class="detail-card">
+              <h3>Proximity & Travel Times</h3>
+              <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));gap:12px;">
+                <div style="padding:10px;border-left:3px solid var(--primary);background:#f8fafc;">
+                  <strong>🚇 Metro Station</strong><div style="font-size:12px;color:var(--ink-muted);">5 Minutes Walk</div>
+                </div>
+                <div style="padding:10px;border-left:3px solid var(--emerald);background:#f8fafc;">
+                  <strong>🏢 IT Tech Parks</strong><div style="font-size:12px;color:var(--ink-muted);">10 Minutes Drive</div>
+                </div>
+                <div style="padding:10px;border-left:3px solid var(--accent);background:#f8fafc;">
+                  <strong>🏥 Multi-Specialty Hospital</strong><div style="font-size:12px;color:var(--ink-muted);">8 Minutes Drive</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sticky Schedule Visit / Lead Form -->
+          <aside class="booking-card">
+            <div class="booking-price">${p.priceLabel}</div>
+            <div style="font-size:12px;color:var(--ink-muted);margin-top:2px;">≈ ₹${estEmi.toLocaleString('en-IN')}/mo EMI Estimate</div>
+            
+            <form id="scheduleVisitForm" class="booking-form" style="margin-top:16px;">
+              <input type="hidden" name="property_id" value="${p.id}">
+              <input type="hidden" name="property_title" value="${p.title}">
+              
+              <label style="font-size:12px;font-weight:700;">Your Full Name *</label>
+              <input type="text" name="name" placeholder="E.g. Vikram Sharma" required>
+              
+              <label style="font-size:12px;font-weight:700;">Phone Number *</label>
+              <input type="tel" name="phone" placeholder="E.g. 9876543210" required>
+              
+              <label style="font-size:12px;font-weight:700;">Preferred Inspection Date</label>
+              <input type="date" name="preferred_date">
+              
+              <button type="submit" class="btn btn-primary" id="submitLeadBtn" style="width:100%;margin-top:6px;">Schedule Site Visit</button>
+              
+              <a href="https://wa.me/${(siteSettings.whatsapp_number || '919876543210').replace(/[^0-9]/g, '')}?text=Hello,%20I%20would%20like%20to%20inquire%20about%20${encodeURIComponent(p.title)}%20(${p.priceLabel})" target="_blank" class="btn btn-whatsapp" style="width:100%;">
+                💬 Direct WhatsApp Chat
+              </a>
             </form>
-            <p class="demo-note">Static demo: this form does not send or store your details.</p>
           </aside>
         </div>
-        <section class="related-listings" aria-labelledby="relatedTitle">
-          <h2 id="relatedTitle">Explore more Bengaluru homes</h2>
-          <div class="cards">${related.map(item => `
-            <article class="property-card" data-property-id="${item.id}" tabindex="0" role="link" aria-label="View details for ${escapeHtml(item.title)}">
-              <div class="photo-wrap"><img src="${item.image}" alt="${escapeHtml(item.alt)}" loading="lazy"><span class="badge">${checkIcon}${item.status === "Resale" ? "Resale listing" : item.status === "Villa" ? "Villa listing" : "Agent listing"}</span></div>
-              <div class="card-body"><div class="price-row"><span class="price">${item.priceLabel}</span></div><h3 class="property-title">${escapeHtml(item.title)}</h3><div class="location">${pinIcon}${escapeHtml(item.location)}</div><div class="facts"><span>${bedIcon}${item.bhk} BHK</span><span>${areaIcon}${item.area}</span></div><span class="view-link">View home →</span></div>
-            </article>`).join("")}</div>
-        </section>
-        <div class="mobile-bottom" aria-label="Property contact actions"><a class="button outline" href="#homes">Back to homes</a><button class="button" type="button" data-focus-enquiry>Request viewing</button></div>`;
-      propertyPage.querySelector("#enquiryForm").addEventListener("submit", event => {
-        event.preventDefault();
-        showToast("Static preview only — this request has not been sent.");
-      });
-      propertyPage.querySelector("[data-focus-enquiry]").addEventListener("click", () => {
-        propertyPage.querySelector("#enquiryName").focus();
-        propertyPage.querySelector("#enquiryForm").scrollIntoView({behavior:"smooth", block:"center"});
-      });
-      propertyPage.querySelectorAll("[data-property-id]").forEach(card => {
-        card.addEventListener("click", event => {
-          if (event.target.closest("button")) return;
-          openDetail(card.dataset.propertyId);
-        });
-        card.addEventListener("keydown", event => {
-          if (!event.target.closest("button, a, input") && (event.key === "Enter" || event.key === " ")) {
-            event.preventDefault();
-            openDetail(card.dataset.propertyId);
+      `;
+
+      // Form handler
+      const visitForm = document.getElementById('scheduleVisitForm');
+      visitForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const btn = document.getElementById('submitLeadBtn');
+        btn.disabled = true;
+        btn.textContent = 'Submitting Request...';
+
+        try {
+          const payload = {
+            property_id: p.id,
+            property_title: p.title,
+            name: visitForm.name.value.trim(),
+            phone: visitForm.phone.value.trim(),
+            message: visitForm.preferred_date?.value ? `Requested visit date: ${visitForm.preferred_date.value}` : 'Scheduled visit from detail page'
+          };
+
+          const res = await fetch('/api/enquiries', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          const resData = await res.json();
+          if (resData.success) {
+            showToast('✅ Site visit request confirmed! Our agent will call you shortly.');
+            visitForm.reset();
+          } else {
+            showToast('❌ ' + (resData.message || 'Error scheduling visit'));
           }
-        });
+        } catch(err) {
+          showToast('❌ Connection error');
+        } finally {
+          btn.disabled = false;
+          btn.textContent = 'Schedule Site Visit';
+        }
       });
     }
-    function renderRoute() {
+
+    document.getElementById('backToHomeBtn').addEventListener('click', () => {
+      location.hash = "";
+    });
+
+    function handleRoute() {
       const match = location.hash.match(/^#property\/([a-z0-9_-]+)$/i);
-      const property = match ? properties.find(item => item.id === match[1]) : null;
-      if (!property) {
-        homeSurface.hidden = false;
-        propertyPage.hidden = true;
-        document.title = defaultTitle;
-        return;
+      if (match) {
+        renderPropertyDetail(match[1]);
+        window.scrollTo(0, 0);
+      } else {
+        document.getElementById('propertyDetailView').classList.remove('active');
+        document.getElementById('homeSurface').style.display = 'block';
       }
-      homeSurface.hidden = true;
-      propertyPage.hidden = false;
-      document.title = `${property.title} in Bengaluru — Haven Realty`;
-      renderPropertyPage(property);
-      window.scrollTo(0, 0);
     }
-    function escapeHtml(value) { return String(value).replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch])); }
-    function selectKind(kind) {
-      state.kind = kind;
-      state.savedOnly = false;
-      document.querySelectorAll(".search-tab").forEach(tab => tab.setAttribute("aria-selected", String(tab.dataset.kind === kind)));
-      render();
+    window.addEventListener('hashchange', handleRoute);
+
+    // --- Interactive EMI Calculator Logic ---
+    function updateEmiCalc() {
+      const P = Number(document.getElementById('loanRange').value);
+      const r = Number(document.getElementById('rateRange').value) / 12 / 100;
+      const n = Number(document.getElementById('tenureRange').value) * 12;
+
+      document.getElementById('calcLoanLabel').textContent = `₹ ${(P/100000).toFixed(1)} Lakhs`;
+      document.getElementById('calcRateLabel').textContent = `${document.getElementById('rateRange').value}%`;
+      document.getElementById('calcTenureLabel').textContent = `${document.getElementById('tenureRange').value} Years`;
+
+      const emi = Math.round((P * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1));
+      const totalPayment = emi * n;
+      const totalInterest = totalPayment - P;
+
+      document.getElementById('calcEmiDisplay').textContent = `₹ ${emi.toLocaleString('en-IN')}`;
+      document.getElementById('calcPrincipalDisplay').textContent = `₹ ${(P/100000).toFixed(1)} L`;
+      document.getElementById('calcInterestDisplay').textContent = `₹ ${(totalInterest/100000).toFixed(1)} L`;
     }
-    document.querySelectorAll(".search-tab").forEach(tab => tab.addEventListener("click", () => selectKind(tab.dataset.kind)));
-    document.querySelectorAll(".nav-links [data-kind]").forEach(link => link.addEventListener("click", () => selectKind(link.dataset.kind)));
-    document.getElementById("searchForm").addEventListener("submit", event => {
-      event.preventDefault();
-      state.budget = document.getElementById("budgetSelect").value;
-      state.bhk = document.getElementById("bhkSelect").value;
-      const searchedLocation = document.getElementById("locationInput").value.trim();
-      state.locality = /^(bengaluru|bangalore)$/i.test(searchedLocation) ? "" : searchedLocation;
-      state.savedOnly = false;
-      render();
-      document.getElementById("homes").scrollIntoView({behavior:"smooth", block:"start"});
-      showToast("Showing homes for your search");
+
+    ['loanRange', 'rateRange', 'tenureRange'].forEach(id => {
+      document.getElementById(id).addEventListener('input', updateEmiCalc);
     });
-    document.getElementById("locationInput").addEventListener("input", event => {
-      const value = event.target.value.trim().toLowerCase();
-      document.querySelectorAll(".locality").forEach(button => button.setAttribute("aria-pressed", String(value && button.textContent.toLowerCase().includes(value))));
+
+    // Mobile Navigation Triggers
+    document.getElementById('mobTabHome').addEventListener('click', () => {
+      location.hash = "";
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     });
-    document.querySelectorAll(".locality").forEach(button => button.addEventListener("click", () => {
-      const locality = button.textContent.replace("📍","").trim();
-      document.getElementById("locationInput").value = locality;
-      state.locality = locality;
-      state.savedOnly = false;
-      document.querySelectorAll(".locality").forEach(item => item.setAttribute("aria-pressed", String(item === button)));
-      render();
-      document.getElementById("homes").scrollIntoView({behavior:"smooth"});
-    }));
-    document.getElementById("savedButton").addEventListener("click", () => {
-      state.savedOnly = !state.savedOnly;
-      render();
-      document.getElementById("homes").scrollIntoView({behavior:"smooth"});
-      if (state.savedOnly && !state.saved.size) showToast("Tap the heart on a home to save it");
+    document.getElementById('mobTabSearch').addEventListener('click', () => {
+      location.hash = "";
+      document.getElementById('locInput').focus();
     });
-    document.getElementById("allHomesLink").addEventListener("click", event => {
-      event.preventDefault();
-      state.savedOnly = false;
-      render();
+    document.getElementById('mobTabSaved').addEventListener('click', () => {
+      location.hash = "";
+      state.showingSavedOnly = true;
+      renderProperties();
+      document.getElementById('propertiesSection').scrollIntoView({ behavior: 'smooth' });
     });
-    grid.addEventListener("click", event => {
-      const saveButton = event.target.closest("[data-save]");
-      const detailButton = event.target.closest("[data-detail]");
-      if (saveButton) {
-        const id = saveButton.dataset.save;
-        if (state.saved.has(id)) { state.saved.delete(id); showToast("Removed from saved homes"); }
-        else { state.saved.add(id); showToast("Home saved"); }
-        render();
-        return;
-      }
-      if (detailButton) { openDetail(detailButton.dataset.detail); return; }
-      const card = event.target.closest(".property-card");
-      if (card) openDetail(card.dataset.propertyId);
-    });
-    grid.addEventListener("keydown", event => {
-      const card = event.target.closest(".property-card");
-      if (card && !event.target.closest("button, a, input") && (event.key === "Enter" || event.key === " ")) {
-        event.preventDefault();
-        openDetail(card.dataset.propertyId);
-      }
-    });
-    function openDetail(id) {
-      const property = properties.find(item => item.id === id);
-      if (!property) return;
-      const route = `#property/${property.id}`;
-      if (location.hash === route) renderRoute();
-      else location.hash = route;
-    }
-    document.getElementById("filterButton").addEventListener("click", () => filterDialog.showModal());
-    document.getElementById("mobileFilterButton").addEventListener("click", () => filterDialog.showModal());
-    document.querySelectorAll("[data-close]").forEach(button => button.addEventListener("click", () => button.closest("dialog").close()));
-    document.querySelectorAll("#filterBedrooms .filter-chip").forEach(button => button.addEventListener("click", () => {
-      const active = button.getAttribute("aria-pressed") === "true";
-      document.querySelectorAll("#filterBedrooms .filter-chip").forEach(item => item.setAttribute("aria-pressed","false"));
-      button.setAttribute("aria-pressed", String(!active));
-    }));
-    document.querySelectorAll("#filterKinds .filter-chip").forEach(button => button.addEventListener("click", () => {
-      const active = button.getAttribute("aria-pressed") === "true";
-      document.querySelectorAll("#filterKinds .filter-chip").forEach(item => item.setAttribute("aria-pressed","false"));
-      button.setAttribute("aria-pressed", String(!active));
-    }));
-    document.getElementById("applyFilters").addEventListener("click", () => {
-      const bhk = document.querySelector("#filterBedrooms [aria-pressed='true']");
-      const status = document.querySelector("#filterKinds [aria-pressed='true']");
-      state.bhk = bhk ? bhk.dataset.bhk : "any";
-      state.status = status ? status.dataset.status : "any";
-      state.min = document.getElementById("minPrice").value;
-      state.max = document.getElementById("maxPrice").value;
-      state.budget = "any";
-      document.getElementById("bhkSelect").value = state.bhk;
-      filterDialog.close();
-      state.savedOnly = false;
-      render();
-      showToast("Filters applied");
-    });
-    document.getElementById("clearFilters").addEventListener("click", () => {
-      state.bhk = "any"; state.min = 0; state.max = 500; state.status = "any"; state.budget = "any"; state.locality = "";
-      document.getElementById("minPrice").value = "0"; document.getElementById("maxPrice").value = "500";
-      document.getElementById("bhkSelect").value = "any"; document.getElementById("budgetSelect").value = "any";
-      document.getElementById("locationInput").value = "Bengaluru";
-      document.querySelectorAll(".filter-chip").forEach(button => button.setAttribute("aria-pressed","false"));
-      document.querySelectorAll(".locality").forEach(button => button.setAttribute("aria-pressed","false"));
-      render();
-    });
-    document.getElementById("sortButton").addEventListener("click", event => {
-      state.sort = state.sort === "recommended" ? "price" : state.sort === "price" ? "price-desc" : "recommended";
-      event.currentTarget.textContent = state.sort === "recommended" ? "Recommended⌄" : state.sort === "price" ? "Price: low to high⌄" : "Price: high to low⌄";
-      render();
-    });
-    document.getElementById("listViewButton").addEventListener("click", () => setView("list"));
-    document.getElementById("mapViewButton").addEventListener("click", () => setView("map"));
-    function setView(view) {
-      const map = view === "map";
-      document.getElementById("listViewButton").setAttribute("aria-pressed", String(!map));
-      document.getElementById("mapViewButton").setAttribute("aria-pressed", String(map));
-      grid.style.display = map ? "none" : "grid";
-      document.getElementById("mapPanel").classList.toggle("is-visible", map);
-    }
-    document.getElementById("mapPanel").addEventListener("click", event => {
-      const pin = event.target.closest("[data-property]");
-      if (pin) openDetail(pin.dataset.property);
-    });
-    document.getElementById("sortButton").addEventListener("keydown", event => { if (event.key === "Escape") event.currentTarget.blur(); });
-    document.querySelectorAll("dialog").forEach(dialog => dialog.addEventListener("click", event => {
-      if (event.target === dialog) dialog.close();
-    }));
-    window.addEventListener("hashchange", renderRoute);
-    setProjectSlide(0);
-    render();
-    renderRoute();
+
+    // Startup Initialization
+    updateFavCounter();
+    loadSiteSettings();
+    loadFeaturedProjects();
+    loadProperties();
+    updateEmiCalc();
+    handleRoute();
   </script>
 </body>
 </html>

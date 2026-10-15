@@ -1,0 +1,195 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// -----------------------------------------------------------------------------
+// 1. BANGALORE PROPERTY INVENTORY
+// Every listing MUST feature a valid Karnataka RERA registration number.
+// -----------------------------------------------------------------------------
+model Property {
+  id              String   @id @default(cuid())
+  title           String
+  slug            String   @unique
+  kreraRegNo      String   // Mandatory: Karnataka RERA registration (e.g. PRM/KA/RERA/...)
+  developerName   String
+  locality        String   // Whitefield, Sarjapur Road, Electronic City, Hebbal, Yelahanka, etc.
+  address         String
+  price           Float    // In Lakhs (e.g. 95.0 = ₹95 Lakhs, 240.0 = ₹2.40 Cr)
+  priceLabel      String   // Formatted display (e.g. "₹95 L", "₹2.4 Cr")
+  bhk             Int      // 1, 2, 3, 4, 5
+  propertyType    String   // Apartment, Villa, Penthouse, Plot
+  areaSqft        Int
+  baths           Int      @default(2)
+  possession      String   // "Ready to Move", "Under Construction (Dec 2026)"
+  status          String   // "New Launch", "Ready to Move", "Resale"
+  featured        Boolean  @default(false)
+  heroSlide       Boolean  @default(false)
+  heroOfferText   String?  // Special launch or festive pricing offer
+  description     String   @db.Text
+  images          String[] // High-res verified image URLs
+  videoUrl        String?  // YouTube embed/link
+  amenities       String[] // Pool, Gym, Club House, 24/7 Power, etc.
+  latitude        Float?
+  longitude       Float?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  leads           Lead[]
+
+  @@index([locality])
+  @@index([bhk])
+  @@index([price])
+  @@index([propertyType])
+  @@index([kreraRegNo])
+}
+
+// -----------------------------------------------------------------------------
+// 2. LEAD CAPTURE (DATA MINIMISATION + ENCRYPTION AT REST)
+// Sensitive PII (phone, email) encrypted with AES-256-GCM.
+// No Aadhaar, PAN, or financial data allowed by design.
+// -----------------------------------------------------------------------------
+model Lead {
+  id                    String      @id @default(cuid())
+  name                  String
+  phoneEncrypted        String      // AES-256-GCM ciphertext
+  phoneHash             String      // HMAC-SHA256 blind index for duplicate search
+  phoneMasked           String      // Safe preview: e.g. "+91 98*** **210"
+  emailEncrypted        String?     // Optional: AES-256-GCM ciphertext
+  emailHash             String?     // Optional: HMAC-SHA256 blind index
+  emailMasked           String?     // Safe preview: e.g. "v***@example.com"
+  
+  propertyId            String?
+  property              Property?   @relation(fields: [propertyId], references: [id], onDelete: SetNull)
+  propertyTitle         String?
+  preferredLocality     String?
+  preferredBudget       String?
+  preferredDate         DateTime?   // For site visit bookings
+  
+  leadType              String      @default("GENERAL_ENQUIRY") // GENERAL_ENQUIRY | SITE_VISIT | WHATSAPP_CLICK
+  message               String?     @db.Text
+  status                String      @default("NEW") // NEW | CONTACTED | FOLLOW_UP | CLOSED | ANONYMIZED
+  
+  consentLogId          String?     @unique
+  consentLog            ConsentLog? @relation(fields: [consentLogId], references: [id])
+  
+  lastActivityAt        DateTime    @default(now())
+  anonymizedAt          DateTime?   // For retention policy enforcement (auto-delete / anonymise)
+  createdAt             DateTime    @default(now())
+  updatedAt             DateTime    @updatedAt
+
+  @@index([phoneHash])
+  @@index([status])
+  @@index([createdAt])
+  @@index([lastActivityAt])
+}
+
+// -----------------------------------------------------------------------------
+// 3. STATUTORY CONSENT LOG (DPDP ACT 2023 - SECTION 6)
+// Immutable proof of consent, notice version, timestamp, language, and IP hash.
+// -----------------------------------------------------------------------------
+model ConsentLog {
+  id                String    @id @default(cuid())
+  consentType       String    // "LEAD_FORM" | "SITE_VISIT" | "COOKIE_BANNER" | "WHATSAPP_REDIRECT"
+  consentVersion    String    // e.g. "v1.0-2026-03"
+  consentText       String    @db.Text // Exact wording presented to user
+  language          String    @default("en") // "en" | "kn" | "hi"
+  isExplicit        Boolean   @default(true) // Always unchecked checkbox
+  ipHash            String    // Salted SHA-256 hash (never raw IP)
+  userAgentHash     String?
+  pageUrl           String
+  
+  withdrawn         Boolean   @default(false)
+  withdrawnAt       DateTime?
+  withdrawalReason  String?
+  createdAt         DateTime  @default(now())
+
+  lead              Lead?
+
+  @@index([ipHash])
+  @@index([consentType])
+  @@index([createdAt])
+}
+
+// -----------------------------------------------------------------------------
+// 4. DATA SUBJECT RIGHTS (DPDP ACT 2023 - SECTIONS 11, 12, 13)
+// Access, Correction, Erasure, Withdrawal, Grievance with 30-day statutory timeline.
+// -----------------------------------------------------------------------------
+model DataSubjectRequest {
+  id                      String    @id @default(cuid())
+  requestTrackingId       String    @unique // e.g. "DSR-KA-2026-9481"
+  requestType             String    // "ACCESS" | "CORRECTION" | "ERASURE" | "WITHDRAW_CONSENT" | "GRIEVANCE"
+  requesterName           String
+  requesterPhoneHash      String
+  requesterPhoneMasked    String
+  requesterEmailEncrypted String?
+  requesterEmailMasked    String?
+  details                 String    @db.Text // Purpose / specifics of request
+  
+  status                  String    @default("PENDING") // PENDING | IN_REVIEW | FULFILLED | REJECTED
+  dueAt                   DateTime  // 30 days from creation
+  fulfilledAt             DateTime?
+  resolutionNotes         String?   @db.Text
+  grievanceOfficerNotes   String?   @db.Text
+  createdAt               DateTime  @default(now())
+  updatedAt               DateTime  @updatedAt
+
+  @@index([requestTrackingId])
+  @@index([requesterPhoneHash])
+  @@index([status])
+  @@index([dueAt])
+}
+
+// -----------------------------------------------------------------------------
+// 5. ADMIN USERS & ROLE-BASED ACCESS CONTROL
+// Strict access, password hashing (bcrypt), TOTP 2FA.
+// -----------------------------------------------------------------------------
+model AdminUser {
+  id                String          @id @default(cuid())
+  email             String          @unique
+  name              String
+  passwordHash      String
+  role              String          @default("ADMIN") // ADMIN | GRIEVANCE_OFFICER | AGENT
+  twoFactorSecret   String?         // Base32 TOTP secret
+  twoFactorEnabled  Boolean         @default(false)
+  isActive          Boolean         @default(true)
+  lastLoginAt       DateTime?
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+
+  auditLogs         AdminAuditLog[]
+}
+
+// -----------------------------------------------------------------------------
+// 6. ADMIN AUDIT TRAIL (IT ACT 2000 & DPDP COMPLIANCE)
+// Tracks every access, view, export, edit, and deletion of user records.
+// -----------------------------------------------------------------------------
+model AdminAuditLog {
+  id          String    @id @default(cuid())
+  adminId     String
+  admin       AdminUser @relation(fields: [adminId], references: [id], onDelete: Cascade)
+  adminEmail  String
+  action      String    // "VIEW_LEAD" | "EXPORT_LEADS" | "DELETE_LEAD" | "FULFILL_DSR" | "EDIT_PROPERTY"
+  resource    String    // "LEAD" | "PROPERTY" | "DSR" | "SETTINGS"
+  resourceId  String?
+  ipHash      String
+  metadata    String?   @db.Text // Sanitised non-PII execution metadata
+  createdAt   DateTime  @default(now())
+
+  @@index([adminId])
+  @@index([action])
+  @@index([createdAt])
+}
+
+// -----------------------------------------------------------------------------
+// 7. DYNAMIC SITE CONFIGURATION & NOTICE STRINGS
+// -----------------------------------------------------------------------------
+model SiteSetting {
+  key       String   @id
+  value     String   @db.Text
+  updatedAt DateTime @updatedAt
+}
