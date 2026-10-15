@@ -93,7 +93,7 @@ export default function ContactPage() {
 
                 <div className="flex items-center gap-3">
                   <Phone className="w-4 h-4 text-emerald-600 shrink-0" />
-                  <span>+91 98765 43210</span>
+                  <span>+91 6303420048</span>
                 </div>
 
                 <div className="flex items-center gap-3">

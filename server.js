@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('node:path');
+const fs = require('node:fs');
 const db = require('./db/database');
 
 const app = express();
@@ -8,8 +9,8 @@ const PORT = process.env.PORT || 3000;
 
 // Middlewares
 app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
 // Serve static assets from 'public'
 app.use(express.static(path.join(__dirname, 'public')));
@@ -168,6 +169,35 @@ app.delete('/api/featured-projects/:id', (req, res) => {
   } catch (error) {
     console.error('Error deleting slide:', error);
     res.status(500).json({ success: false, message: 'Server error deleting slide' });
+  }
+});
+
+// ----------------- BROCHURE PDF UPLOAD API -----------------
+app.post('/api/upload-pdf', (req, res) => {
+  try {
+    const { filename, fileData } = req.body;
+    if (!fileData) {
+      return res.status(400).json({ success: false, message: 'No file data provided' });
+    }
+
+    const uploadDir = path.join(__dirname, 'public', 'uploads', 'brochures');
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true });
+    }
+
+    const baseName = (filename || 'brochure.pdf').replace(/[^a-zA-Z0-9._-]/g, '_');
+    const uniqueFilename = `${Date.now()}_${baseName}`;
+    const filePath = path.join(uploadDir, uniqueFilename);
+
+    const base64Content = fileData.includes('base64,') ? fileData.split('base64,')[1] : fileData;
+    const buffer = Buffer.from(base64Content, 'base64');
+    fs.writeFileSync(filePath, buffer);
+
+    const publicUrl = `/uploads/brochures/${uniqueFilename}`;
+    res.json({ success: true, message: 'PDF uploaded successfully', url: publicUrl });
+  } catch (error) {
+    console.error('Error uploading PDF:', error);
+    res.status(500).json({ success: false, message: 'Failed to upload PDF' });
   }
 });
 

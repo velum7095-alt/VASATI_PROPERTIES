@@ -94,33 +94,39 @@ export async function middleware(request: NextRequest) {
   response.headers.set('Cross-Origin-Opener-Policy', 'same-origin');
 
   // Content-Security-Policy
-  // - script-src: self + Cloudflare Turnstile (challenges.cloudflare.com)
-  //   Next.js dev HMR requires unsafe-eval; locked out in production.
-  // - style-src: self + unsafe-inline (Next.js injects critical CSS inline)
-  // - font-src: self (next/font downloads and serves fonts from self at build time)
-  // - frame-src: Cloudflare Turnstile renders in an iframe
-  // - frame-ancestors: none (replaces X-Frame-Options for CSP-capable browsers)
   const isDev = process.env.NODE_ENV !== 'production';
-  const scriptSrc = isDev
-    ? `'self' 'unsafe-eval' https://challenges.cloudflare.com`
-    : `'self' https://challenges.cloudflare.com`;
 
-  const csp = [
-    `default-src 'self'`,
-    `script-src ${scriptSrc}`,
-    `style-src 'self' 'unsafe-inline'`,
-    `font-src 'self' data:`,
-    `img-src 'self' data: blob: https:`,
-    `connect-src 'self'`,
-    `frame-src https://challenges.cloudflare.com`,
-    `frame-ancestors 'none'`,
-    `object-src 'none'`,
-    `base-uri 'self'`,
-    `form-action 'self'`,
-    `upgrade-insecure-requests`,
-  ].join('; ');
+  if (!isDev) {
+    const csp = [
+      `default-src 'self'`,
+      `script-src 'self' https://challenges.cloudflare.com`,
+      `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com`,
+      `font-src 'self' data: https://fonts.gstatic.com`,
+      `img-src 'self' data: blob: https:`,
+      `connect-src 'self'`,
+      `frame-src https://challenges.cloudflare.com`,
+      `frame-ancestors 'none'`,
+      `object-src 'none'`,
+      `base-uri 'self'`,
+      `form-action 'self'`,
+      `upgrade-insecure-requests`,
+    ].join('; ');
 
-  response.headers.set('Content-Security-Policy', csp);
+    response.headers.set('Content-Security-Policy', csp);
+  } else {
+    // Development CSP: Allow HMR, React DevTools, gstack extensions, Google Fonts, and local network requests
+    const devCsp = [
+      `default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https: http: ws: wss:`,
+      `script-src 'self' 'unsafe-inline' 'unsafe-eval' https: http:`,
+      `style-src 'self' 'unsafe-inline' https: http:`,
+      `font-src 'self' data: https: http:`,
+      `img-src 'self' data: blob: https: http:`,
+      `connect-src 'self' https: http: ws: wss:`,
+      `frame-src 'self' https: http:`,
+    ].join('; ');
+
+    response.headers.set('Content-Security-Policy', devCsp);
+  }
 
   return response;
 }

@@ -87,8 +87,8 @@ export default function Header() {
             <span className="text-slate-300">Direct Developer Pricing</span>
           </div>
           <div className="flex items-center gap-4 text-slate-300">
-            <a href="tel:+919876543210" className="hover:text-white transition">
-              Advisory: +91 98765 43210
+            <a href="tel:+916303420048" className="hover:text-white transition">
+              Advisory: +91 6303420048
             </a>
             <span>|</span>
             <Link href="/contact" className="hover:text-white transition">

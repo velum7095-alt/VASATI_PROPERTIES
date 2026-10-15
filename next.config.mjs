@@ -3,6 +3,10 @@ const nextConfig = {
   output: process.env.STANDALONE === '1' ? 'standalone' : undefined,
   reactStrictMode: true,
   poweredByHeader: false, // Security: hide X-Powered-By
+  // Fix pnpm symlink resolution for Prisma client
+  experimental: {
+    serverComponentsExternalPackages: ['@prisma/client', '@prisma/engines'],
+  },
   images: {
     remotePatterns: [
       {
@@ -39,10 +43,6 @@ const nextConfig = {
           {
             key: 'Permissions-Policy',
             value: 'camera=(), microphone=(), geolocation=(), browsing-topics=()',
-          },
-          {
-            key: 'Content-Security-Policy',
-            value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://challenges.cloudflare.com https://www.googletagmanager.com https://plausible.io https://analytics.umami.is; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' https://images.unsplash.com https://challenges.cloudflare.com data:; frame-src 'self' https://challenges.cloudflare.com https://www.youtube.com https://www.youtube-nocookie.com; connect-src 'self' https://challenges.cloudflare.com https://www.google-analytics.com https://plausible.io https://analytics.umami.is;",
           },
         ],
       },

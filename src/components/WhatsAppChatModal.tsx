@@ -41,7 +41,7 @@ export default function WhatsAppChatModal({
   const [hasOptedIn, setHasOptedIn] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const waNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '919876543210';
+  const waNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '916303420048';
   const queryMessage = propertyTitle
     ? `Hi, I am inquiring about ${propertyTitle} (K-RERA: ${kreraRegNo || 'Bangalore'}). Please share the brochure and verified pricing.`
     : `Hi, I would like to inquire about verified Bangalore residential properties.`;

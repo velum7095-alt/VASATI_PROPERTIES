@@ -25,6 +25,7 @@ db.exec(`
     status TEXT NOT NULL,
     image TEXT NOT NULL,
     video_url TEXT,
+    brochure_url TEXT,
     alt TEXT,
     listed TEXT,
     kind TEXT,
@@ -70,6 +71,15 @@ db.exec(`
 try { db.exec("ALTER TABLE properties ADD COLUMN video_url TEXT;"); } catch (e) {}
 try { db.exec("ALTER TABLE featured_projects ADD COLUMN video_url TEXT;"); } catch (e) {}
 
+// Try adding brochure_url column if database already existed
+try { db.exec("ALTER TABLE properties ADD COLUMN brochure_url TEXT;"); } catch (e) {}
+try { db.exec("ALTER TABLE featured_projects ADD COLUMN brochure_url TEXT;"); } catch (e) {}
+
+// Populate brochure_url for existing properties if empty
+try {
+  db.prepare("UPDATE properties SET brochure_url = '/uploads/brochures/vasati_project_brochure.pdf' WHERE brochure_url IS NULL OR brochure_url = ''").run();
+} catch (e) {}
+
 // Seed default settings if empty
 const settingsCountStmt = db.prepare('SELECT COUNT(*) as count FROM site_settings');
 if (settingsCountStmt.get().count === 0) {
@@ -77,8 +87,8 @@ if (settingsCountStmt.get().count === 0) {
     { key: 'hero_tag', value: '✨ Premium Bengaluru Real Estate Portfolio' },
     { key: 'hero_title', value: 'Find Your Dream Space in the Silicon Valley of India' },
     { key: 'hero_subtitle', value: 'Verified builder developments, luxury gated communities, and prime resale apartments across Bengaluru\'s top tech corridors.' },
-    { key: 'contact_phone', value: '+91 98765 43210' },
-    { key: 'whatsapp_number', value: '919876543210' },
+    { key: 'contact_phone', value: '+91 6303420048' },
+    { key: 'whatsapp_number', value: '916303420048' },
     { key: 'contact_email', value: 'contact@vasatiproperties.com' },
     { key: 'stat_active_listings', value: '150+' },
     { key: 'stat_hubs', value: '15+' },
@@ -89,6 +99,12 @@ if (settingsCountStmt.get().count === 0) {
     insertSetting.run(s.key, s.value);
   }
 }
+
+// Ensure active WhatsApp number and phone are updated to user's specified number
+try {
+  db.prepare("INSERT OR REPLACE INTO site_settings (key, value) VALUES ('whatsapp_number', '916303420048')").run();
+  db.prepare("INSERT OR REPLACE INTO site_settings (key, value) VALUES ('contact_phone', '+91 6303420048')").run();
+} catch (e) {}
 
 // Seed default properties if table is empty
 const countStmt = db.prepare('SELECT COUNT(*) as count FROM properties');
@@ -356,10 +372,10 @@ module.exports = {
     const stmt = db.prepare(`
       INSERT INTO properties (
         id, title, location, locality, price, priceLabel, bhk, area, baths, status,
-        image, video_url, alt, listed, kind, possession, description, featured
+        image, video_url, brochure_url, alt, listed, kind, possession, description, featured
       ) VALUES (
         ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
-        ?, ?, ?, ?, ?, ?, ?, ?
+        ?, ?, ?, ?, ?, ?, ?, ?, ?
       )
     `);
     const price = Number(prop.price);
@@ -377,6 +393,7 @@ module.exports = {
       prop.status || 'New',
       prop.image || 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1000&q=78',
       prop.video_url || '',
+      prop.brochure_url || '/uploads/brochures/vasati_project_brochure.pdf',
       prop.alt || prop.title,
       prop.listed || 'Agent listing · Verified',
       prop.kind || 'Apartment',
@@ -401,6 +418,7 @@ module.exports = {
         status = ?,
         image = ?,
         video_url = ?,
+        brochure_url = ?,
         alt = ?,
         listed = ?,
         kind = ?,
@@ -423,6 +441,7 @@ module.exports = {
       prop.status,
       prop.image,
       prop.video_url || '',
+      prop.brochure_url || '',
       prop.alt || prop.title,
       prop.listed || 'Verified Listing',
       prop.kind || 'Apartment',

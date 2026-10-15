@@ -193,7 +193,7 @@ export default function AdminDashboardPage() {
             </span>
             <span className="text-[10px] text-emerald-400 font-semibold flex items-center gap-1">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-              Authenticated via TOTP 2FA • Bangalore Jurisdiction
+              Authenticated • Bangalore Jurisdiction
             </span>
           </div>
         </div>
@@ -203,7 +203,7 @@ export default function AdminDashboardPage() {
             <span className="text-slate-400">Admin:</span>
             <span className="font-mono text-emerald-400 font-bold">{adminUser?.email || 'admin@example.com'}</span>
             <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-emerald-950 text-emerald-300 border border-emerald-800">
-              2FA ACTIVE
+              ACTIVE
             </span>
           </div>
 

@@ -301,11 +301,11 @@
           <div class="form-grid" style="margin-bottom:24px;">
             <div class="form-group">
               <label>Primary Phone Number</label>
-              <input type="text" id="settingContactPhone" placeholder="E.g. +91 98765 43210">
+              <input type="text" id="settingContactPhone" placeholder="E.g. +91 6303420048">
             </div>
             <div class="form-group">
               <label>WhatsApp Number (Digits only, including country code)</label>
-              <input type="text" id="settingWhatsApp" placeholder="E.g. 919876543210">
+              <input type="text" id="settingWhatsApp" placeholder="E.g. 916303420048">
             </div>
             <div class="form-group form-full">
               <label>Support Email Address</label>
@@ -432,6 +432,17 @@
           <div class="form-group form-full">
             <label>Video Tour Walkthrough URL (YouTube Embed / Link)</label>
             <input type="url" id="formVideoUrl" placeholder="https://www.youtube.com/watch?v=... or https://youtu.be/...">
+          </div>
+          <div class="form-group form-full">
+            <label>Project Brochure PDF (Upload File or Enter PDF URL)</label>
+            <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+              <input type="text" id="formBrochureUrl" placeholder="/uploads/brochures/... or https://..." style="flex:1;min-width:240px;">
+              <label class="btn btn-outline btn-sm" style="cursor:pointer;margin:0;display:inline-flex;align-items:center;gap:6px;">
+                📁 Choose PDF File
+                <input type="file" id="formBrochureFile" accept="application/pdf" style="display:none;">
+              </label>
+            </div>
+            <div id="brochureUploadStatus" style="font-size:12px;color:#38bdf8;margin-top:4px;"></div>
           </div>
           <div class="form-group form-full">
             <label>Description</label>
@@ -624,7 +635,8 @@
           </td>
           <td>${p.possession || 'Ready'}</td>
           <td style="text-align:right">
-            <div style="display:flex;gap:6px;justify-content:flex-end;">
+            <div style="display:flex;gap:6px;justify-content:flex-end;align-items:center;">
+              ${p.brochure_url ? `<a href="${p.brochure_url}" target="_blank" class="btn btn-sm" style="background:rgba(56,189,248,0.15);color:#38bdf8;" title="View Brochure">📄 PDF</a>` : ''}
               <button class="btn btn-outline btn-sm" onclick="editProperty('${p.id}')">✏ Edit</button>
               <button class="btn btn-danger btn-sm" onclick="deleteProperty('${p.id}', '${p.title.replace(/'/g, "\\'")}')">🗑</button>
             </div>
@@ -644,6 +656,8 @@
       document.getElementById('modalTitle').textContent = 'Add New Property';
       document.getElementById('formImage').value = 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1000&q=78';
       document.getElementById('formVideoUrl').value = '';
+      document.getElementById('formBrochureUrl').value = '';
+      document.getElementById('brochureUploadStatus').textContent = '';
       propModal.showModal();
     });
 
@@ -666,6 +680,8 @@
       document.getElementById('formStatus').value = p.status;
       document.getElementById('formImage').value = p.image;
       document.getElementById('formVideoUrl').value = p.video_url || '';
+      document.getElementById('formBrochureUrl').value = p.brochure_url || '';
+      document.getElementById('brochureUploadStatus').textContent = p.brochure_url ? `Attached: ${p.brochure_url}` : '';
       document.getElementById('formDescription').value = p.description || '';
       propModal.showModal();
     }
@@ -689,6 +705,7 @@
         status: document.getElementById('formStatus').value,
         image: document.getElementById('formImage').value.trim(),
         video_url: document.getElementById('formVideoUrl').value.trim(),
+        brochure_url: document.getElementById('formBrochureUrl').value.trim(),
         description: document.getElementById('formDescription').value.trim()
       };
 
@@ -713,6 +730,41 @@
         saveBtn.disabled = false;
         saveBtn.textContent = 'Save Property';
       }
+    });
+
+    // Auto-upload PDF when file is selected
+    document.getElementById('formBrochureFile').addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      if (file.type !== 'application/pdf' && !file.name.toLowerCase().endsWith('.pdf')) {
+        showToast('Please select a valid PDF file');
+        return;
+      }
+      const status = document.getElementById('brochureUploadStatus');
+      status.textContent = '⏳ Uploading ' + file.name + '...';
+      const reader = new FileReader();
+      reader.onload = async () => {
+        try {
+          const res = await fetch('/api/upload-pdf', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ filename: file.name, fileData: reader.result })
+          });
+          const data = await res.json();
+          if (data.success) {
+            document.getElementById('formBrochureUrl').value = data.url;
+            status.textContent = '✅ Attached: ' + file.name;
+            showToast('Brochure PDF uploaded successfully!');
+          } else {
+            status.textContent = '❌ Upload failed: ' + (data.message || 'Error');
+            showToast('Failed to upload PDF');
+          }
+        } catch (err) {
+          status.textContent = '❌ Upload error';
+          showToast('Error uploading PDF file');
+        }
+      };
+      reader.readAsDataURL(file);
     });
 
     async function deleteProperty(id, title) {
@@ -981,8 +1033,9 @@
             </select>
           </td>
           <td style="text-align:right">
-            <a href="https://wa.me/91${e.phone.replace(/[^0-9]/g,'')}?text=Hello%20${encodeURIComponent(e.name)},%20regarding%20your%20inquiry%20on%20Vasati%20Properties" target="_blank" class="btn btn-outline btn-sm" style="color:#34d399;">
-              💬 WhatsApp
+            <a href="https://wa.me/91${e.phone.replace(/[^0-9]/g,'')}?text=Hello%20${encodeURIComponent(e.name)},%20regarding%20your%20inquiry%20on%20Vasati%20Properties" target="_blank" class="btn btn-outline btn-sm" style="color:#34d399;display:inline-flex;align-items:center;gap:6px;">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="#34d399"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+              <span>WhatsApp</span>
             </a>
             <button class="btn btn-danger btn-sm" onclick="deleteEnquiry(${e.id})">🗑</button>
           </td>

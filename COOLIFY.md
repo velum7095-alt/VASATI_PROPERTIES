@@ -53,7 +53,7 @@ If you prefer running a separate managed PostgreSQL database in Coolify:
 | `NEXT_PUBLIC_AGENCY_KRERA_NO` | Karnataka RERA agency reg no. | `PRM/KA/RERA/1251/[YEAR]/AG/[NO]` |
 | `NEXT_PUBLIC_GRIEVANCE_OFFICER_NAME` | Grievance Officer name | `[GRIEVANCE_OFFICER_NAME_PLACEHOLDER]` |
 | `NEXT_PUBLIC_GRIEVANCE_OFFICER_EMAIL`| Grievance Officer email | `grievance@yourdomain.in` |
-| `NEXT_PUBLIC_WHATSAPP_NUMBER` | Official WhatsApp business phone | `919876543210` |
+| `NEXT_PUBLIC_WHATSAPP_NUMBER` | Official WhatsApp business phone | `916303420048` |
 | `NEXT_PUBLIC_TURNSTILE_SITE_KEY` | Cloudflare Turnstile public site key| `0x4AAAAAA...` (Optional) |
 | `TURNSTILE_SECRET_KEY` | Cloudflare Turnstile secret key | `0x4AAAAAA...` (Optional) |
 

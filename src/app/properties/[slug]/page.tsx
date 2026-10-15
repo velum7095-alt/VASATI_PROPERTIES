@@ -48,7 +48,7 @@ export default async function PropertyDetailPage({ params }: Props) {
   if (!property) notFound();
 
   const approxEmiLakh = Math.round(property.price * 867.8);
-  const waNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '919876543210';
+  const waNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '916303420048';
   const waUrl = `https://wa.me/${waNumber}?text=Hi,%20I%20am%20inquiring%20about%20${encodeURIComponent(
     property.title
   )}%20(RERA:%20${encodeURIComponent(property.kreraRegNo)})%20priced%20at%20${encodeURIComponent(
@@ -149,13 +149,10 @@ export default async function PropertyDetailPage({ params }: Props) {
                 </div>
               </div>
 
-              {/* Price & EMI */}
+              {/* Price */}
               <div className="flex flex-wrap items-baseline gap-4 pt-4 border-t border-slate-100">
                 <div className="text-3xl font-extrabold text-slate-950">
                   {property.priceLabel}
-                </div>
-                <div className="text-xs text-slate-500 font-medium">
-                  Estimated EMI ≈ ₹{approxEmiLakh.toLocaleString('en-IN')}/month (at 8.5% p.a.)
                 </div>
               </div>
             </div>

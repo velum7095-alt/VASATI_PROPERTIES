@@ -404,9 +404,7 @@ export default function ListingsFilterGrid({
                       {p.priceLabel}
                     </div>
                     <div className="text-[11px] text-slate-500 font-semibold bg-slate-100 px-2 py-0.5 rounded-md">
-                      {p.purpose === 'rent'
-                        ? 'Deposit: 3-5 Mo'
-                        : `EMI ≈ ₹${(approxEmiLakh / 1000).toFixed(1)}k/mo`}
+                      ₹{Math.round((p.price * 100000) / p.areaSqft).toLocaleString('en-IN')}/sqft
                     </div>
                   </div>
 
