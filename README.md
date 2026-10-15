@@ -1,0 +1,2 @@
+# VASATI_PROPERTIES
+Realestate
