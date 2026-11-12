@@ -56,6 +56,10 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    volumes:
+      # Persistent storage for uploaded property images and brochures.
+      # Files survive container restarts and redeployments.
+      - uploads_data:/app/public/uploads
     networks:
       - dpdp_network
 
@@ -65,5 +69,9 @@ networks:
 
 volumes:
   pgdata:
+    driver: local
+  # Separate persistent volume for user-uploaded images and brochures.
+  # Keeps media files isolated from the database volume.
+  uploads_data:
     driver: local
 

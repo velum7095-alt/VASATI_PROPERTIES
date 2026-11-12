@@ -56,6 +56,11 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 COPY --chown=nextjs:nodejs docker-entrypoint.sh ./
 RUN chmod +x ./docker-entrypoint.sh
 
+# Create persistent upload directories & set ownership so the volume mount
+# point is writable by the non-root nextjs user at runtime.
+RUN mkdir -p ./public/uploads/images ./public/uploads/brochures \
+ && chown -R nextjs:nodejs ./public/uploads
+
 USER nextjs
 
 EXPOSE 3000
